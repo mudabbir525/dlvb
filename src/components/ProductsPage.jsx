@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, X, Plus, Minus, Phone, Mail, MapPin } from 'lucide-react';
 import Navbar from './Navbar';
-import test from '../assets/test.png'
+import test from '../assets/planeuron.jpg'
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -119,7 +119,7 @@ const ProductsPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
               <div key={product.id} 
-                className="bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                className="bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                 <div className="aspect-video bg-gray-50">
                   <img
                     src={test}
@@ -131,16 +131,16 @@ const ProductsPage = () => {
                   <h3 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h3>
                   <p className="text-gray-600 mb-6 line-clamp-3">{product.description}</p>
                   
-                  <div className="space-y-3 mb-8">
+                  {/* <div className="space-y-3 mb-8">
                     {product.features.map((feature, index) => (
                       <div key={index} className="flex items-center text-gray-700">
                         <span className="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span>
                         {feature}
                       </div>
                     ))}
-                  </div>
+                  </div> */}
 
-                  <div className="flex items-center justify-between mt-auto">
+                  {/* <div className="flex items-center justify-between mt-auto">
                     <span className="text-2xl font-bold text-gray-800">
                       ₹{product.price}
                     </span>
@@ -151,7 +151,7 @@ const ProductsPage = () => {
                       Order Now
                       <ShoppingCart className="w-4 h-4" />
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
@@ -283,8 +283,8 @@ const ProductsPage = () => {
               <h3 className="text-xl font-bold mb-6">Contact Info</h3>
               <div className="space-y-4">
                 {[
-                  { icon: Phone, text: "+91 9876543210" },
-                  { icon: Mail, text: "info@dlvbimpex.com" },
+                  { icon: Phone, text: "+91 83743 99149" },
+                  { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
                   { icon: MapPin, text: "Hyderabad" }
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3 text-gray-300">

@@ -12,10 +12,10 @@ const Navbar = () => {
 
   return (
     <nav className="absolute top-8 left-0 right-0 z-10">
-      <div className="bg-white backdrop-blur-lg rounded-2xl p-7 flex justify-between items-center mx-4 shadow-lg">
+      <div className="bg-[rgb(254,244,238)] backdrop-blur-lg rounded-2xl p-7 flex justify-between items-center mx-4">
         <div 
           onClick={() => navigate('/')} 
-          className="text-black font-bold text-2xl cursor-pointer"
+          className="text-black font-bold text-4xl cursor-pointer"
         >
           DLVB IMPEX PVT. LTD.
         </div>

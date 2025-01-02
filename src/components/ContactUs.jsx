@@ -172,23 +172,44 @@ const ContactPage = () => {
           </div>
         </div>
 
-        <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <h3 className="font-bold mb-4">Product</h3>
-                <p className="text-gray-400">Explore product</p>
-              </div>
-              <div>
-                <h3 className="font-bold mb-4">Company</h3>
-                <p className="text-gray-400">About</p>
-              </div>
-            </div>
-            <div className="mt-16">
-              <h2 className="text-2xl font-bold">DLVB IMPEX PVT. LTD.</h2>
-            </div>
-          </div>
-        </footer>
+        {/* Footer */}
+              <footer className="bg-gray-900 text-white py-16">
+                <div className="max-w-7xl mx-auto px-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div>
+                      <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
+                      <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+                      <ul className="space-y-4">
+                        {['Product', 'Company'].map((item) => (
+                          <li key={item}>
+                            <button className="text-gray-300 hover:text-white transition-colors">
+                              {item === 'Product' ? 'Explore product' : 'About'}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+                      <div className="space-y-4">
+                        {[
+                          { icon: Phone, text: "+91 83743 99149" },
+                          { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+                          { icon: MapPin, text: "Hyderabad" }
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-center gap-3 text-gray-300">
+                            <item.icon className="w-5 h-5" />
+                            <span>{item.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </footer>
       </main>
     </div>
   );
