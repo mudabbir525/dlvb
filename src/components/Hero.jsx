@@ -363,6 +363,24 @@ const Hero = () => {
             </div>
           </div>
         </motion.footer>
+        {/* Footer */}
+        {/* <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h3 className="font-bold mb-4">Product</h3>
+                <p className="text-gray-400">Explore product</p>
+              </div>
+              <div>
+                <h3 className="font-bold mb-4">Company</h3>
+                <p className="text-gray-400">About</p>
+              </div>
+            </div>
+            <div className="mt-16">
+              <h2 className="text-2xl font-bold">DLVB IMPEX PVT. LTD.</h2>
+            </div>
+          </div>
+        </footer> */}
       </main>
     </div>
   );
