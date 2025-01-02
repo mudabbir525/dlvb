@@ -17,8 +17,6 @@ const ContactPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus('sending');
-    
-    // Simulate form submission
     setTimeout(() => {
       setStatus('success');
       setFormData({ name: '', phone: '', email: '', message: '' });
@@ -33,38 +31,36 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E6E6FA]">
+    <div className="relative">
       <div className="sticky top-0 left-0 right-0 z-50">
         <Navbar />
       </div>
 
-      <div className="container mx-auto px-4 pt-24 pb-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mt-24 mb-16">
-            <h1 className="text-5xl font-bold text-gray-800 mb-4">Get in Touch</h1>
+      <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="text-center mt-28 mb-16">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">Get in Touch</h1>
             <p className="text-xl text-gray-600">We're here to help and answer any questions you might have</p>
           </div>
-{/* grid grid-cols-1 lg:grid-cols-2 gap-12 */}
-          <div className=" items-center justify-center">
-            {/* Contact Information */}
-            {/* <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-lg">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-green-100/80 backdrop-blur-lg rounded-3xl p-8 transition-transform hover:scale-105">
               <h2 className="text-3xl font-bold text-gray-800 mb-8">Contact Information</h2>
               
-              <div className="space-y-6">
+              <div className="space-y-8">
                 <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Phone className="w-6 h-6 text-blue-600" />
+                  <div className="bg-gray-900 text-white p-4 rounded-2xl">
+                    <Phone className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Phone</h3>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-gray-600">+91 9876543210</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Mail className="w-6 h-6 text-blue-600" />
+                  <div className="bg-indigo-600 text-white p-4 rounded-2xl">
+                    <Mail className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Email</h3>
@@ -73,24 +69,23 @@ const ContactPage = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <MapPin className="w-6 h-6 text-blue-600" />
+                  <div className="bg-gray-900 text-white p-4 rounded-2xl">
+                    <MapPin className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Address</h3>
-                    <p className="text-gray-600">123 Innovation Drive, Tech City</p>
+                    <p className="text-gray-600">Hyderabad</p>
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
 
-            {/* Contact Form */}
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-lg">
-              <h2 className="text-3xl font-bold text-gray-800 mb-8">Send Message</h2>
+            <div className="bg-gray-900 text-white rounded-3xl p-8 transition-transform hover:scale-105">
+              <h2 className="text-3xl font-bold mb-8">Send Message</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
+                  <label className="block font-medium mb-2" htmlFor="name">
                     Name *
                   </label>
                   <input
@@ -100,13 +95,13 @@ const ContactPage = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" htmlFor="phone">
+                  <label className="block font-medium mb-2" htmlFor="phone">
                     Phone Number *
                   </label>
                   <input
@@ -116,13 +111,13 @@ const ContactPage = () => {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
                     placeholder="Your phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" htmlFor="email">
+                  <label className="block font-medium mb-2" htmlFor="email">
                     Email (Optional)
                   </label>
                   <input
@@ -131,13 +126,13 @@ const ContactPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
                     placeholder="Your email address"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" htmlFor="message">
+                  <label className="block font-medium mb-2" htmlFor="message">
                     Message
                   </label>
                   <textarea
@@ -146,7 +141,7 @@ const ContactPage = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
                     placeholder="Your message"
                   ></textarea>
                 </div>
@@ -154,7 +149,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
                 >
                   {status === 'sending' ? (
                     'Sending...'
@@ -167,65 +162,34 @@ const ContactPage = () => {
                 </button>
 
                 {status === 'success' && (
-                  <p className="text-green-600 text-center font-medium">Message sent successfully!</p>
+                  <p className="text-green-400 text-center font-medium">Message sent successfully!</p>
                 )}
                 {status === 'error' && (
-                  <p className="text-red-600 text-center font-medium">Failed to send message. Please try again.</p>
+                  <p className="text-red-400 text-center font-medium">Failed to send message. Please try again.</p>
                 )}
               </form>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
-              <p className="text-gray-300 text-lg">
-                Crafting Solutions for a Healthier Future
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-6">Quick Links</h3>
-              <ul className="space-y-4">
-                {[
-                  { name: 'About Us', path: '/about' },
-                  { name: 'Products', path: '/products' },
-                  { name: 'Services', path: '/services' },
-                  { name: 'Contact', path: '/contact' }
-                ].map((item) => (
-                  <li key={item.name}>
-                    <button
-                      onClick={() => navigate(item.path)}
-                      className="text-gray-300 hover:text-white transition-colors"
-                    >
-                      {item.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-6">Contact Info</h3>
-              <div className="space-y-4">
-                {[
-                  { icon: Phone, text: "+91 9876543210 " },
-                  { icon: Mail, text: "info@dlvbimpex.com" },
-                  { icon: MapPin, text: "Hyderabad" }
-                ].map((item, index) => (
-                  <p key={index} className="flex items-center gap-3 text-gray-300">
-                    <item.icon className="w-5 h-5" />
-                    {item.text}
-                  </p>
-                ))}
+        <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h3 className="font-bold mb-4">Product</h3>
+                <p className="text-gray-400">Explore product</p>
+              </div>
+              <div>
+                <h3 className="font-bold mb-4">Company</h3>
+                <p className="text-gray-400">About</p>
               </div>
             </div>
+            <div className="mt-16">
+              <h2 className="text-2xl font-bold">DLVB IMPEX PVT. LTD.</h2>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </main>
     </div>
   );
 };

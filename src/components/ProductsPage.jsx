@@ -84,7 +84,6 @@ const ProductsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Implement order submission logic here
       alert('Order placed successfully!');
       setShowOrderForm(false);
       setFormData({
@@ -101,18 +100,18 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg">
+    <div className="relative min-h-screen">
+      <div className="sticky top-0 z-50">
         <Navbar />
       </div>
 
-      <main className="flex-grow py-20" style={{
-        background: 'linear-gradient(135deg, #E6E6FA 0%, #B19CD9 100%)'
-      }}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mt-24 mb-16">
-            <h1 className="text-5xl font-bold text-gray-800 mb-6">Our Products</h1>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+      <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100 pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mt-20 mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+              Our Products
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
               Discover our innovative healthcare solutions designed to enhance your well-being and revolutionize personal health monitoring.
             </p>
           </div>
@@ -120,22 +119,22 @@ const ProductsPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
               <div key={product.id} 
-                className="bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                className="bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="aspect-video bg-gray-50">
                   <img
                     src={test}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">{product.name}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">{product.description}</p>
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h3>
+                  <p className="text-gray-600 mb-6 line-clamp-3">{product.description}</p>
                   
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-3 mb-8">
                     {product.features.map((feature, index) => (
                       <div key={index} className="flex items-center text-gray-700">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                        <span className="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span>
                         {feature}
                       </div>
                     ))}
@@ -143,13 +142,13 @@ const ProductsPage = () => {
 
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-2xl font-bold text-gray-800">
-                    ₹{product.price}
+                      ₹{product.price}
                     </span>
                     <button
                       onClick={() => handleOrderClick(product)}
-                      className="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center gap-2"
+                      className="bg-gray-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2"
                     >
-                      Order
+                      Order Now
                       <ShoppingCart className="w-4 h-4" />
                     </button>
                   </div>
@@ -162,26 +161,26 @@ const ProductsPage = () => {
 
       {/* Order Form Modal */}
       {showOrderForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto relative">
             <button
               onClick={() => setShowOrderForm(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
+              className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
             >
               <X className="w-6 h-6" />
             </button>
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Order Form</h2>
-            <p className="text-gray-600 mb-6">Please fill in your details to place the order.</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Order Form</h2>
+            <p className="text-gray-600 mb-8">Please fill in your details to place the order.</p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Product</label>
                 <input
                   type="text"
                   value={formData.product}
                   readOnly
-                  className="w-full px-4 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200"
                 />
               </div>
 
@@ -191,15 +190,15 @@ const ProductsPage = () => {
                   <button
                     type="button"
                     onClick={() => handleQuantityChange(-1)}
-                    className="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"
+                    className="bg-gray-100 p-3 rounded-xl hover:bg-gray-200"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="text-gray-800 font-semibold text-lg">{formData.quantity}</span>
+                  <span className="text-gray-800 font-semibold text-xl">{formData.quantity}</span>
                   <button
                     type="button"
                     onClick={() => handleQuantityChange(1)}
-                    className="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"
+                    className="bg-gray-100 p-3 rounded-xl hover:bg-gray-200"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -213,7 +212,7 @@ const ProductsPage = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   placeholder="Your full name"
                 />
               </div>
@@ -225,7 +224,7 @@ const ProductsPage = () => {
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   placeholder="Your phone number"
                 />
               </div>
@@ -236,23 +235,23 @@ const ProductsPage = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   placeholder="Your email address"
                 />
               </div>
 
-              <div className="border-t pt-4 mt-6">
-                <div className="flex justify-between items-center mb-6">
+              <div className="border-t pt-6 mt-8">
+                <div className="flex justify-between items-center mb-8">
                   <span className="text-gray-700 font-medium">Total Price:</span>
-                  <span className="text-2xl font-bold text-gray-800">₹{formData.totalPrice}</span>
+                  <span className="text-3xl font-bold text-gray-800">₹{formData.totalPrice}</span>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                 >
                   Place Order
-                  <ShoppingCart className="w-4 h-4" />
+                  <ShoppingCart className="w-5 h-5" />
                 </button>
               </div>
             </form>
@@ -261,25 +260,20 @@ const ProductsPage = () => {
       )}
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-purple-900 to-purple-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <footer className="bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
               <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
-              <p className="text-gray-300 text-lg">
-                Crafting Solutions for a Healthier Future
-              </p>
+              <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-6">Quick Links</h3>
               <ul className="space-y-4">
-                {['About Us', 'Products', 'Services', 'Contact'].map((item) => (
+                {['Product', 'Company'].map((item) => (
                   <li key={item}>
-                    <button
-                      onClick={() => navigate(`/${item.toLowerCase().replace(' ', '-')}`)}
-                      className="text-gray-300 hover:text-white transition-colors"
-                    >
-                      {item}
+                    <button className="text-gray-300 hover:text-white transition-colors">
+                      {item === 'Product' ? 'Explore product' : 'About'}
                     </button>
                   </li>
                 ))}
