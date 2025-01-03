@@ -117,7 +117,7 @@ const Hero = () => {
               damping: 20
             }}
           >
-            "Crafting Solutions for a Healthier Future"
+            “Crafting Solutions for a Healthier Future"
           </motion.h1>
           <motion.p
             className="font-bold text-lg sm:text-xl md:text-2xl text-center"
