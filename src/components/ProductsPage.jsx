@@ -4,8 +4,8 @@ import { ShoppingCart, X, Plus, Minus, Phone, Mail, MapPin } from 'lucide-react'
 import Navbar from './Navbar';
 import { motion } from 'framer-motion';
 import test from '/src/assets/planeuron.jpg'
-import neuh from '/src/assets/nuhemetide.jpg'
-import livtroc from '/src/assets/livtroc.jpg'
+import neuh from '/src/assets/nuhemetide2.jpg'
+import livtroc from '/src/assets/livtroc3.jpg'
 import livtroc2 from '/src/assets/livtroc2.jpg'
 import { Link } from "react-router-dom";
 
@@ -135,7 +135,7 @@ const ProductsPage = () => {
                 onClick={() => setSelectedProduct(product)}
                 className="cursor-pointer bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="aspect-video bg-gray-50">
+                <div className="aspect-video bg-white p-4">
                   <img
                     src={product.images[0]}
                     alt={product.name}
