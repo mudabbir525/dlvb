@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, X, Plus, Minus, Phone, Mail, MapPin } from 'lucide-react';
 import Navbar from './Navbar';
-import test from '../assets/planeuron.jpg'
+import { motion } from 'framer-motion';
+import test from '/src/assets/planeuron.jpg'
+import neuh from '/src/assets/nuhemetide.jpg'
+import livtroc from '/src/assets/livtroc.jpg'
+import livtroc2 from '/src/assets/livtroc2.jpg'
+import { Link } from "react-router-dom";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -17,49 +23,36 @@ const ProductsPage = () => {
     totalPrice: ''
   });
 
+
+
   const products = [
     {
       id: 1,
-      name: "BranikVit Pro",
-      description: "Advanced health tracking with AI-powered insights. Features include continuous heart monitoring, sleep analysis, and real-time health alerts.",
+      name: "LIVTROC",
+      description: "Livtroc capsules contain tocotrienol, an advanced form of Vitamin E often referred to as the next generation Vitamin E due to its 40–60 times greater potency compared to synthetic Vitamin E. Livtroc is formulated to support the management of fatty liver and non-alcoholic steatohepatitis (NASH). Fatty liver, or hepatosteatosis, results from fat buildup in the liver, while NASH involves liver inflammation and damage caused by this fat accumulation.",
+      disclaimer: "Use only under a doctor’s recommendation. Do not consume without a prescription.",
       price: 299.99,
-      features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"]
+      features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
+      images: [livtroc, livtroc2] 
     },
     {
       id: 2,
-      name: "PalNeuron Plus",
-      description: "Smart medication management with automated scheduling and real-time adherence tracking for optimal health outcomes.",
-      price: 199.99,
-      features: ["Smart Dispensing", "Alert System", "Usage Analytics"]
+      name: "NUHEMETIDE",
+      description: "Nuhemetide Tablet is designed to deliver elemental iron in the form of heme iron polypeptides. This highly bioavailable form of iron is easily absorbed and utilized by the body, making it effective in addressing iron deficiency and promoting overall health.",
+      disclaimer: "Use only under a doctor’s recommendation. Do not consume without a prescription.",
+      price: 299.99,
+      features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
+      images: [neuh, neuh]
     },
-    {
-      id: 3,
-      name: "BranikVit Complete",
-      description: "Comprehensive health solution including premium devices and annual subscription to our analytics platform.",
-      price: 499.99,
-      features: ["Premium Devices", "Annual Platform Access", "Priority Support"]
-    },
-    {
-      id: 4,
-      name: "PalNeuron ECG",
-      description: "Medical-grade ECG monitoring device with instant analysis and physician sharing capabilities.",
-      price: 249.99,
-      features: ["Medical Grade", "Real-time Analysis", "Doctor Connect"]
-    },
-    {
-      id: 5,
-      name: "BranikVit BP",
-      description: "Advanced blood pressure monitor featuring cloud synchronization and comprehensive trend analysis.",
-      price: 159.99,
-      features: ["Cloud Sync", "Trend Reports", "Heart Detection"]
-    },
-    {
-      id: 6,
-      name: "PalNeuron Analytics",
-      description: "Premium health analytics subscription with AI-powered insights and expert consultation.",
-      price: 99.99,
-      features: ["AI Insights", "Expert Access", "Monthly Reports"]
-    }
+    // {
+    //   id: 3,
+    //   name: "BranikVit Pro",
+    //   description: "Advanced health tracking with AI-powered insights. Features include continuous heart monitoring, sleep analysis, and real-time health alerts.",
+    //   disclaimer: "Consult your healthcare provider before use. Not a substitute for professional medical advice.",
+    //   price: 299.99,
+    //   features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
+    //   images: [test, test, test] // Replace with actual image paths
+    // },
   ];
 
   const handleOrderClick = (product) => {
@@ -99,6 +92,18 @@ const ProductsPage = () => {
     }
   };
 
+  useEffect(() => {
+    let interval;
+    if (selectedProduct) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prev) => 
+          prev === selectedProduct.images.length - 1 ? 0 : prev + 1
+        );
+      }, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [selectedProduct]);
+
   return (
     <div className="relative min-h-screen">
       <div className="sticky top-0 z-50">
@@ -107,196 +112,196 @@ const ProductsPage = () => {
 
       <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100 pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mt-20 mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mt-20 mb-16"
+          >
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
               Our Products
             </h1>
             <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
-              Discover our innovative healthcare solutions designed to enhance your well-being and revolutionize personal health monitoring.
+              Discover our innovative healthcare solutions designed to enhance your well-being.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <div key={product.id} 
-                className="bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            {products.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => setSelectedProduct(product)}
+                className="cursor-pointer bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              >
                 <div className="aspect-video bg-gray-50">
                   <img
-                    src={test}
+                    src={product.images[0]}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h3>
-                  <p className="text-gray-600 mb-6 line-clamp-3">{product.description}</p>
-                  
-                  {/* <div className="space-y-3 mb-8">
-                    {product.features.map((feature, index) => (
-                      <div key={index} className="flex items-center text-gray-700">
-                        <span className="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span>
-                        {feature}
-                      </div>
-                    ))}
-                  </div> */}
-
-                  {/* <div className="flex items-center justify-between mt-auto">
-                    <span className="text-2xl font-bold text-gray-800">
-                      ₹{product.price}
-                    </span>
-                    <button
-                      onClick={() => handleOrderClick(product)}
-                      className="bg-gray-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2"
-                    >
-                      Order Now
-                      <ShoppingCart className="w-4 h-4" />
-                    </button>
-                  </div> */}
-                </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </main>
 
-      {/* Order Form Modal */}
-      {showOrderForm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-3xl p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto relative grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
             <button
-              onClick={() => setShowOrderForm(false)}
+              onClick={() => setSelectedProduct(null)}
               className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
             >
               <X className="w-6 h-6" />
             </button>
 
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Order Form</h2>
-            <p className="text-gray-600 mb-8">Please fill in your details to place the order.</p>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Product</label>
-                <input
-                  type="text"
-                  value={formData.product}
-                  readOnly
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200"
+            {/* Left side - Image Carousel */}
+            <div className="relative aspect-square  rounded-2xl overflow-hidden">
+              {selectedProduct.images.map((image, index) => (
+                <motion.img
+                  key={index}
+                  src={image}
+                  alt={`${selectedProduct.name} view ${index + 1}`}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: currentImageIndex === index ? 1 : 0,
+                    transition: { duration: 0.5 }
+                  }}
                 />
+              ))}
+              
+              {/* Image indicators */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {selectedProduct.images.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      currentImageIndex === index ? 'bg-white' : 'bg-white/50'
+                    }`}
+                  />
+                ))}
               </div>
+            </div>
 
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Quantity</label>
-                <div className="flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(-1)}
-                    className="bg-gray-100 p-3 rounded-xl hover:bg-gray-200"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="text-gray-800 font-semibold text-xl">{formData.quantity}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(1)}
-                    className="bg-gray-100 p-3 rounded-xl hover:bg-gray-200"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  placeholder="Your full name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Phone *</label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  placeholder="Your phone number"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Email (Optional)</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  placeholder="Your email address"
-                />
-              </div>
-
-              <div className="border-t pt-6 mt-8">
-                <div className="flex justify-between items-center mb-8">
-                  <span className="text-gray-700 font-medium">Total Price:</span>
-                  <span className="text-3xl font-bold text-gray-800">₹{formData.totalPrice}</span>
+            {/* Right side - Content */}
+            <div className="flex flex-col">
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">{selectedProduct.name}</h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Description</h3>
+                  <p className="text-gray-600">{selectedProduct.description}</p>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-                >
-                  Place Order
-                  <ShoppingCart className="w-5 h-5" />
-                </button>
+                <div>
+                  {/* <h3 className="text-xl font-semibold text-gray-800 mb-3">Features</h3> */}
+                  {/*<ul className="space-y-2">
+                    {selectedProduct.features.map((feature, index) => (
+                      <li key={index} className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>*/}
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Disclaimer</h3>
+                  <p className="text-gray-600">{selectedProduct.disclaimer}</p>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
-              <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-6">Quick Links</h3>
-              <ul className="space-y-4">
-                {['Product', 'Company'].map((item) => (
-                  <li key={item}>
-                    <button className="text-gray-300 hover:text-white transition-colors">
-                      {item === 'Product' ? 'Explore product' : 'About'}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-6">Contact Info</h3>
-              <div className="space-y-4">
-                {[
-                  { icon: Phone, text: "+91 83743 99149" },
-                  { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
-                  { icon: MapPin, text: "Hyderabad" }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 text-gray-300">
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+
+<motion.footer
+  className="bg-gray-900 text-white py-16"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+>
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
+        <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+        <ul className="space-y-4">
+          {[
+            { label: "Explore product", to: "/products" },
+            { label: "About", to: "/about" },
+          ].map((item) => (
+            <motion.li
+              key={item.label}
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link
+                to={item.to}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                {item.label}
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+        <div className="space-y-4">
+          {[
+            { icon: Phone, text: "+91 83743 99149" },
+            { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+            { icon: MapPin, text: "Hyderabad" },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-3 text-gray-300"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <item.icon className="w-5 h-5" />
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
         </div>
-      </footer>
+      </motion.div>
+    </div>
+  </div>
+</motion.footer>
     </div>
   );
 };

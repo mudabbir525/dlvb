@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Send, Phone, Mail, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -172,44 +174,78 @@ const ContactPage = () => {
           </div>
         </div>
 
-        {/* Footer */}
-              <footer className="bg-gray-900 text-white py-16">
-                <div className="max-w-7xl mx-auto px-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
-                      <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-6">Quick Links</h3>
-                      <ul className="space-y-4">
-                        {['Product', 'Company'].map((item) => (
-                          <li key={item}>
-                            <button className="text-gray-300 hover:text-white transition-colors">
-                              {item === 'Product' ? 'Explore product' : 'About'}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-6">Contact Info</h3>
-                      <div className="space-y-4">
-                        {[
-                          { icon: Phone, text: "+91 83743 99149" },
-                          { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
-                          { icon: MapPin, text: "Hyderabad" }
-                        ].map((item, index) => (
-                          <div key={index} className="flex items-center gap-3 text-gray-300">
-                            <item.icon className="w-5 h-5" />
-                            <span>{item.text}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </footer>
+        <motion.footer
+  className="bg-gray-900 text-white py-16"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+>
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
+        <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+        <ul className="space-y-4">
+          {[
+            { label: "Explore product", to: "/products" },
+            { label: "About", to: "/about" },
+          ].map((item) => (
+            <motion.li
+              key={item.label}
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link
+                to={item.to}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                {item.label}
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+        <div className="space-y-4">
+          {[
+            { icon: Phone, text: "+91 83743 99149" },
+            { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+            { icon: MapPin, text: "Hyderabad" },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-3 text-gray-300"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <item.icon className="w-5 h-5" />
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</motion.footer>
       </main>
     </div>
   );

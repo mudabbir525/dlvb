@@ -7,6 +7,7 @@ import icon2 from "../assets/2.webp";
 import icon3 from "../assets/3.webp";
 import image5 from "../assets/5.png";
 import { ShoppingCart, X, Plus, Minus, Phone, Mail, MapPin } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const fadeInUp = {
@@ -298,71 +299,77 @@ const Hero = () => {
         </motion.div>
 
         <motion.footer
-          className="bg-gray-900 text-white py-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+  className="bg-gray-900 text-white py-16"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+>
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
+        <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+        <ul className="space-y-4">
+          {[
+            { label: "Explore product", to: "/products" },
+            { label: "About", to: "/about" },
+          ].map((item) => (
+            <motion.li
+              key={item.label}
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link
+                to={item.to}
+                className="text-gray-300 hover:text-white transition-colors"
               >
-                <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
-                <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <h3 className="text-xl font-bold mb-6">Quick Links</h3>
-                <ul className="space-y-4">
-                  {['Product', 'Company'].map((item) => (
-                    <motion.li
-                      key={item}
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <button className="text-gray-300 hover:text-white transition-colors">
-                        {item === 'Product' ? 'Explore product' : 'About'}
-                      </button>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <h3 className="text-xl font-bold mb-6">Contact Info</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: Phone, text: "+91 83743 99149" },
-                    { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
-                    { icon: MapPin, text: "Hyderabad" }
-                  ].map((item, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex items-center gap-3 text-gray-300"
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.text}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </motion.footer>
+                {item.label}
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+        <div className="space-y-4">
+          {[
+            { icon: Phone, text: "+91 83743 99149" },
+            { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+            { icon: MapPin, text: "Hyderabad" },
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-3 text-gray-300"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <item.icon className="w-5 h-5" />
+              <span>{item.text}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</motion.footer>
         {/* Footer */}
         {/* <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
           <div className="max-w-7xl mx-auto px-6">
