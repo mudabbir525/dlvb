@@ -274,7 +274,7 @@ const Hero = () => {
                   whileHover={{ scale: 1.05, x: 5 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Explore the Products
+                 <Link to="/products" > Explore the Products </Link>
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
               </div>
