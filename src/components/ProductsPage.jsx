@@ -8,6 +8,7 @@ import neuh from '/src/assets/nuhemetide2.jpg'
 import livtroc from '/src/assets/livtroc3.jpg'
 import livtroc2 from '/src/assets/livtroc2.jpg'
 import { Link } from "react-router-dom";
+import creon from '/src/assets/pancreon.jpeg'
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -44,6 +45,16 @@ const ProductsPage = () => {
       features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
       images: [neuh, neuh]
     },
+  {
+  id: 3,
+  name: "Pancreon-25000",
+  description: "Pancreon-25000 Capsule is a specialized pancreatic enzyme supplement designed to improve digestion by aiding in the breakdown of fats, proteins, and carbohydrates. It supports individuals with pancreatic enzyme deficiency, enhancing nutrient absorption and reducing digestive discomfort effectively.",
+  disclaimer: "Use Pancreon-25000 Capsule only under medical supervision. Consult your doctor before use, and do not exceed the prescribed dosage.",
+  price: 299.99,
+  features: ["Supports Digestive Health", "Enhances Nutrient Absorption", "Reduces Stool Frequency and Bloating"],
+  images: [creon, creon]
+}
+,
     // {
     //   id: 3,
     //   name: "BranikVit Pro",
