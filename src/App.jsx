@@ -5,6 +5,7 @@ import ProductsPage from './components/ProductsPage';
 import Hero from './components/Hero';
 import AboutPage from './components/AboutPage';
 import { HelmetProvider } from 'react-helmet-async';
+import ProductDetailsPage from './components/ProductDetailsPage';
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/about" element={<AboutPage />} />
-        
+        <Route path="/product/:productId" element={<ProductDetailsPage />} />
       </Routes>
     </Router>
     </HelmetProvider>

@@ -22,9 +22,9 @@ import creon from "/src/assets/pancreon.jpeg";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
-  const [showOrderForm, setShowOrderForm] = useState(false);
+  // const [showOrderForm, setShowOrderForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -124,270 +124,175 @@ const ProductsPage = () => {
   }, [selectedProduct]);
 
   return (
-    <>
-      {/* Add Helmet for SEO */}
-      <Helmet>
-        {/* Page-level SEO */}
-        <title>
-          DLVB IMPEX - Advanced Healthcare Products | Livtroc, Nuhemetide,
-          Pancreon
-        </title>
-        <meta
-          name="description"
-          content="Discover innovative healthcare solutions from DLVB IMPEX. Our products include Livtroc for liver health, Nuhemetide for iron supplementation, and Pancreon-25000 for digestive support."
-        />
-        <meta
-          name="keywords"
-          content="Livtroc, Nuhemetide, Pancreon-25000, liver health, iron supplement, pancreatic enzyme, healthcare products"
-        />
+  <>
+    <Helmet>
+      <title>
+        DLVB IMPEX - Advanced Healthcare Products | Livtroc, Nuhemetide,
+        Pancreon
+      </title>
+      <meta
+        name="description"
+        content="Discover innovative healthcare solutions from DLVB IMPEX. Our products include Livtroc for liver health, Nuhemetide for iron supplementation, and Pancreon-25000 for digestive support."
+      />
+      <meta
+        name="keywords"
+        content="Livtroc, Nuhemetide, Pancreon-25000, liver health, iron supplement, pancreatic enzyme, healthcare products"
+      />
 
-        {/* Open Graph / Social Media */}
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content="DLVB IMPEX - Advanced Healthcare Products"
-        />
-        <meta
-          property="og:description"
-          content="Innovative healthcare solutions designed to enhance your well-being."
-        />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:title"
+        content="DLVB IMPEX - Advanced Healthcare Products"
+      />
+      <meta
+        property="og:description"
+        content="Innovative healthcare solutions designed to enhance your well-being."
+      />
 
-        {/* Product-specific structured data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ItemList",
-            itemListElement: products.map((product, index) => ({
-              "@type": "ListItem",
-              position: index + 1,
-              item: {
-                "@type": "MedicalProduct",
-                name: product.name,
-                description: product.description,
-                offers: {
-                  "@type": "Offer",
-                  price: product.price,
-                  priceCurrency: "INR",
-                },
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: products.map((product, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "MedicalProduct",
+              name: product.name,
+              description: product.description,
+              offers: {
+                "@type": "Offer",
+                price: product.price,
+                priceCurrency: "INR",
               },
-            })),
-          })}
-        </script>
-      </Helmet>
-      <div className="relative min-h-screen">
-        <div className="sticky top-0 z-50">
-          <Navbar />
-        </div>
+            },
+          })),
+        })}
+      </script>
+    </Helmet>
+    <div className="relative min-h-screen">
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
 
-        <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100 pt-24 pb-16">
-          <div className="max-w-7xl mx-auto px-6">
+      <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100 pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mt-20 mb-16"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+              Our Products
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+              Discover our innovative healthcare solutions designed to enhance
+              your well-being.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => navigate(`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`)}
+                className="cursor-pointer bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              >
+                <div className="aspect-video bg-white p-4">
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </main>
+
+      <motion.footer
+        className="bg-gray-900 text-white py-16"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mt-20 mb-16"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                Our Products
-              </h1>
-              <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
-                Discover our innovative healthcare solutions designed to enhance
-                your well-being.
+              <h3 className="text-2xl font-bold mb-6">
+                DLVB IMPEX PVT. LTD.
+              </h3>
+              <p className="text-gray-300 text-lg">
+                Crafting Solutions for a Healthier Future
               </p>
             </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => setSelectedProduct(product)}
-                  className="cursor-pointer bg-white/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-                >
-                  <div className="aspect-video bg-white p-4">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </main>
-
-        {/* Product Detail Modal */}
-        {selectedProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-3xl p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto relative grid grid-cols-1 md:grid-cols-2 gap-8"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <button
-                onClick={() => setSelectedProduct(null)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
-              >
-                <X className="w-6 h-6" />
-              </button>
-
-              {/* Left side - Image Carousel */}
-              <div className="relative aspect-square  rounded-2xl overflow-hidden">
-                {selectedProduct.images.map((image, index) => (
-                  <motion.img
-                    key={index}
-                    src={image}
-                    alt={`${selectedProduct.name} view ${index + 1}`}
-                    className="absolute inset-0 w-full h-full object-contain"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: currentImageIndex === index ? 1 : 0,
-                      transition: { duration: 0.5 },
-                    }}
-                  />
+              <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+              <ul className="space-y-4">
+                {[
+                  { label: "Explore product", to: "/products" },
+                  { label: "About", to: "/about" },
+                ].map((item) => (
+                  <motion.li
+                    key={item.label}
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Link
+                      to={item.to}
+                      className="text-gray-300 hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.li>
                 ))}
-
-                {/* Image indicators */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  {selectedProduct.images.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        currentImageIndex === index ? "bg-white" : "bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Right side - Content */}
-              <div className="flex flex-col">
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                  {selectedProduct.name}
-                </h2>
-
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                      Description
-                    </h3>
-                    <p className="text-gray-600">
-                      {selectedProduct.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    {/* <h3 className="text-xl font-semibold text-gray-800 mb-3">Features</h3> */}
-                    {/*<ul className="space-y-2">
-                    {selectedProduct.features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-gray-600">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>*/}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                      Disclaimer
-                    </h3>
-                    <p className="text-gray-600">
-                      {selectedProduct.disclaimer}
-                    </p>
-                  </div>
-                </div>
+              </ul>
+            </motion.div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+              <div className="space-y-4">
+                {[
+                  { icon: Phone, text: "+91 83743 99149" },
+                  { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+                  { icon: MapPin, text: "Hyderabad" },
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-center gap-3 text-gray-300"
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    <span>{item.text}</span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
-          </motion.div>
-        )}
-
-        <motion.footer
-          className="bg-gray-900 text-white py-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h3 className="text-2xl font-bold mb-6">
-                  DLVB IMPEX PVT. LTD.
-                </h3>
-                <p className="text-gray-300 text-lg">
-                  Crafting Solutions for a Healthier Future
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <h3 className="text-xl font-bold mb-6">Quick Links</h3>
-                <ul className="space-y-4">
-                  {[
-                    { label: "Explore product", to: "/products" },
-                    { label: "About", to: "/about" },
-                  ].map((item) => (
-                    <motion.li
-                      key={item.label}
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link
-                        to={item.to}
-                        className="text-gray-300 hover:text-white transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <h3 className="text-xl font-bold mb-6">Contact Info</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: Phone, text: "+91 83743 99149" },
-                    { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
-                    { icon: MapPin, text: "Hyderabad" },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex items-center gap-3 text-gray-300"
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.text}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
           </div>
-        </motion.footer>
-      </div>
-    </>
-  );
+        </div>
+      </motion.footer>
+    </div>
+  </>
+);
 };
 
 export default ProductsPage;
