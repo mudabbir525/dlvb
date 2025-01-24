@@ -4,9 +4,11 @@ import ContactPage from './components/ContactUs';
 import ProductsPage from './components/ProductsPage';
 import Hero from './components/Hero';
 import AboutPage from './components/AboutPage';
+import { HelmetProvider } from 'react-helmet-async';
 
 const App = () => {
   return (
+    <HelmetProvider>
     <Router>
       
       <Routes>
@@ -17,6 +19,7 @@ const App = () => {
         
       </Routes>
     </Router>
+    </HelmetProvider>
   );
 };
 
