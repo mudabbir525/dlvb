@@ -106,8 +106,9 @@ const ProductDetailsPage = () => {
           <div className="relative aspect-square rounded-2xl overflow-hidden">
             <img 
               src={product.images[currentImageIndex]} 
-              alt={product.name} 
+              alt={`${product.name} - ${product.description}`} 
               className="w-full h-full object-contain" 
+              loading="lazy" 
             />
             
             {/* Image Navigation Dots */}
@@ -127,6 +128,154 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Product Details */}
+          <Helmet>
+  <title>{`${product.name} - Advanced Formulation for Health | DLVB IMPEX`}</title>
+  <meta 
+    name="description" 
+    content={`${product.name} by DLVB IMPEX. ${product.description}. Use only under medical supervision.`} 
+  />
+  <meta 
+    name="keywords" 
+    content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, buy ${product.name}, advanced tablets, fatty liver capsules, iron supplements, pancreatic enzyme supplements, health products, ${product.name} price`} 
+  />
+  <meta name="author" content="DLVB IMPEX" />
+  <meta property="og:title" content={`${product.name} - Advanced Formulation for Health`} />
+  <meta property="og:description" content={product.description} />
+  <meta property="og:image" content={product.images[0]} />
+  <meta property="og:url" content={`https://https://dlvbimpexpvtltd.com/product/${productId}`} />
+  <meta property="og:type" content="product" />
+  <meta name="robots" content="index, follow" />
+  <script type="application/ld+json">
+{`
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "${product.name}",
+    "image": [
+      "${product.images[0]}",
+      "${product.images[1]}"
+    ],
+    "description": "${product.description}",
+    "brand": {
+      "@type": "Brand",
+      "name": "DLVB IMPEX"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "299.99",
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "137"
+    }
+  }
+`}
+</script>
+
+</Helmet>
+
+          <Helmet>
+  <title>{`${product.name} - Advanced Formulation for Health | DLVB IMPEX`}</title>
+  <meta 
+    name="description" 
+    content={`${product.name} by DLVB IMPEX. ${product.description}. Use only under medical supervision.`} 
+  />
+  <meta 
+    name="keywords" 
+    content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, buy ${product.name}, advanced tablets, fatty liver capsules, iron supplements, pancreatic enzyme supplements, health products, ${product.name} price`} 
+  />
+  <meta name="author" content="DLVB IMPEX" />
+  <meta property="og:title" content={`${product.name} - Advanced Formulation for Health`} />
+  <meta property="og:description" content={product.description} />
+  <meta property="og:image" content={product.images[0]} />
+  <meta property="og:url" content={`https://yourwebsite.com/product/${productId}`} />
+  <meta property="og:type" content="product" />
+  <meta name="robots" content="index, follow" />
+  <script type="application/ld+json">
+{`
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "${product.name}",
+    "image": [
+      "${product.images[0]}",
+      "${product.images[1]}"
+    ],
+    "description": "${product.description}",
+    "brand": {
+      "@type": "Brand",
+      "name": "DLVB IMPEX"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "299.99",
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "137"
+    }
+  }
+`}
+</script>
+
+</Helmet>
+
+          <Helmet>
+  <title>{`${product.name} - Advanced Formulation for Health | DLVB IMPEX`}</title>
+  <meta 
+    name="description" 
+    content={`${product.name} by DLVB IMPEX. ${product.description}. Use only under medical supervision.`} 
+  />
+  <meta 
+    name="keywords" 
+    content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, buy ${product.name}, advanced tablets, fatty liver capsules, iron supplements, pancreatic enzyme supplements, health products, ${product.name} price`} 
+  />
+  <meta name="author" content="DLVB IMPEX" />
+  <meta property="og:title" content={`${product.name} - Advanced Formulation for Health`} />
+  <meta property="og:description" content={product.description} />
+  <meta property="og:image" content={product.images[0]} />
+  <meta property="og:url" content={`https://yourwebsite.com/product/${productId}`} />
+  <meta property="og:type" content="product" />
+  <meta name="robots" content="index, follow" />
+
+  <script type="application/ld+json">
+{`
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "${product.name}",
+    "image": [
+      "${product.images[0]}",
+      "${product.images[1]}"
+    ],
+    "description": "${product.description}",
+    "brand": {
+      "@type": "Brand",
+      "name": "DLVB IMPEX"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "299.99",
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "137"
+    }
+  }
+`}
+</script>
+
+</Helmet>
+
           <div>
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               {product.name}
@@ -202,6 +351,25 @@ const ProductDetailsPage = () => {
                   {/* <p className="text-gray-600 mt-2">
                     ₹{otherProduct.price.toFixed(2)}
                   </p> */}
+                  <Helmet>
+  <title>{`${product.name} - Advanced Formulation for Health | DLVB IMPEX`}</title>
+  <meta 
+    name="description" 
+    content={`${product.name} by DLVB IMPEX. ${product.description}. Use only under medical supervision.`} 
+  />
+  <meta 
+    name="keywords" 
+    content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, buy ${product.name}, advanced tablets, fatty liver capsules, iron supplements, pancreatic enzyme supplements, health products, ${product.name} price`} 
+  />
+  <meta name="author" content="DLVB IMPEX" />
+  <meta property="og:title" content={`${product.name} - Advanced Formulation for Health`} />
+  <meta property="og:description" content={product.description} />
+  <meta property="og:image" content={product.images[0]} />
+  <meta property="og:url" content={`https://yourwebsite.com/product/${productId}`} />
+  <meta property="og:type" content="product" />
+  <meta name="robots" content="index, follow" />
+</Helmet>
+
                 </div>
               </Link>
             ))}
