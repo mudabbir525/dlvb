@@ -9,6 +9,12 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import livtroc2 from '../assets/livtroc2.jpg';
+import livtroc3 from '../assets/livtroc3.jpg';
+import nuhemetide2 from "../assets/nuhemetide2.jpg";
+import pancreon from "../assets/pancreon.jpeg";
+
+
 
 const products = [
   {
@@ -20,9 +26,7 @@ const products = [
       "Use only under a doctor's recommendation. Do not consume without a prescription.",
     // price: 299.99,
     // features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
-    images: [
-      "/src/assets/livtroc3.jpg", 
-      "/src/assets/livtroc2.jpg"
+    images: [ livtroc3 , livtroc2
     ],
   },
   {
@@ -35,8 +39,7 @@ const products = [
     price: 299.99,
     features: ["24/7 Monitoring", "AI Health Insights", "Mobile Integration"],
     images: [
-      "/src/assets/nuhemetide2.jpg", 
-      "/src/assets/nuhemetide2.jpg"
+    nuhemetide2 , nuhemetide2
     ],
   },
   {
@@ -53,8 +56,8 @@ const products = [
       "Reduces Stool Frequency and Bloating",
     ],
     images: [
-      "/src/assets/pancreon.jpeg", 
-      "/src/assets/pancreon.jpeg"
+      pancreon, 
+      pancreon
     ],
   },
 ];
