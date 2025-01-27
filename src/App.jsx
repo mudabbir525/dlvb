@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import AboutPage from './components/AboutPage';
 import { HelmetProvider } from 'react-helmet-async';
 import ProductDetailsPage from './components/ProductDetailsPage';
+import NotFound from './components/NotFound';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/product/:productId" element={<ProductDetailsPage />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
     </HelmetProvider>
