@@ -104,11 +104,6 @@ const ProductDetailsPage = () => {
               "brand": {
                 "@type": "Brand",
                 "name": "DLVB IMPEX"
-              },
-              "offers": {
-                "@type": "Offer",
-                "priceCurrency": "INR",
-                "availability": "https://schema.org/InStock"
               }
             }
           `}

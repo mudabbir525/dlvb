@@ -27,7 +27,7 @@ const ProductsPage = () => {
     email: "",
     quantity: 1,
     product: "",
-    totalPrice: "",
+  
   });
 
   const products = [
