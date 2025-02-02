@@ -17,6 +17,7 @@ import livtroc from "/src/assets/livtroc3.jpg";
 import livtroc2 from "/src/assets/livtroc2.jpg";
 import neuh from "/src/assets/nuhemetide2.jpg";
 import creon from "/src/assets/pancreon.jpeg";
+import dianurovit from "../assets/dianurovit.jpg";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -57,7 +58,17 @@ const ProductsPage = () => {
       images: [creon, creon],
       altText: "Pancreon-25000- Pancreatic enzyme supplement",
       slug: "pancreon-25000"
-    }
+    },
+    {
+  id: 4,
+  name: "Dianurovit",
+  description: "Dianurovit Softgel Capsules combine Omega 3 Fatty Acids, Biotin, Green Tea Extract, Ginkgo Biloba Extract, Ginseng Extract, Grape Seed Extract, Garlic Extract, Antioxidants, Vitamins, Minerals, and Trace Elements to support overall health, vitality, and well-being.",
+  disclaimer: "This product is a nutraceutical and not intended to diagnose, treat, cure, or prevent any disease. Consult your healthcare provider before use.",
+  images: [dianurovit, dianurovit],
+  altText: "Dianurovit - Softgel Capsules with Omega 3, Biotin, and Antioxidants",
+  slug: "dianurovit-softgel-capsules",
+  
+}
   ];
 
   return (
