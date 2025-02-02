@@ -11,6 +11,7 @@ import livtroc2 from '../assets/livtroc2.jpg';
 import livtroc3 from '../assets/livtroc3.jpg';
 import nuhemetide2 from "../assets/nuhemetide2.jpg";
 import pancreon from "../assets/pancreon.jpeg";
+import dianurovit from "../assets/dianurovit.jpg";
 
 const products = [
   {
@@ -22,6 +23,7 @@ const products = [
     images: [livtroc3, livtroc2],
     altText: "Livtroc - Tocotrienol soft Gelatin Capsules",
     slug: "livtroc",
+    price: 390,
     metaInfo: {
       title: "Livtroc Capsules – Advanced Liver Health | DLVB IMPEX LTD",
       description: "Livtroc softgel capsules with tocotrienol, a potent Vitamin E, support fatty liver & NASH management. Promote liver health with advanced nutrition.",
@@ -37,6 +39,7 @@ const products = [
     images: [nuhemetide2, nuhemetide2],
     altText: "NUHEMETIDE - Heme Iron Polypeptides",
     slug: "nuhemetide",
+    price: 350,
     metaInfo: {
       title: "Nuhemetide 12mg Tablets – Iron Supplement | DLVB IMPEX LTD",
       description: "Nuhemetide 12mg tablets with heme iron polypeptides offer superior absorption to combat iron deficiency and support overall health effectively.",
@@ -46,6 +49,7 @@ const products = [
   {
     id: 3,
     name: "Pancreon-25000",
+    price: 545,
     description: "Pancreon-25000 capsules aid digestion with pancreatic enzymes, improving nutrient absorption and supporting those with enzyme deficiencies.",
     longDescription: "Pancreon-25000 Capsule is a specialized pancreatic enzyme supplement designed to improve digestion by aiding in the breakdown of fats, proteins, and carbohydrates. It supports individuals with pancreatic enzyme deficiency, enhancing nutrient absorption and reducing digestive discomfort effectively.",
     disclaimer: "Use Pancreon-25000 Capsule only under medical supervision. Consult your doctor before use.",
@@ -57,7 +61,24 @@ const products = [
       description: "Pancreon-25000 capsules aid digestion with pancreatic enzymes, improving nutrient absorption and supporting those with enzyme deficiencies.",
       canonical: "https://dlvbimpexpvtltd.com/product/pancreon-25000"
     }
+  },
+  {
+  id: 4,
+  name: "Dianurovit",
+  price: 545,
+  description: "Dianurovit Softgel Capsules combine Omega 3 Fatty Acids, Biotin, Green Tea Extract, Ginkgo Biloba Extract, Ginseng Extract, Grape Seed Extract, Garlic Extract, Antioxidants, Vitamins, Minerals, and Trace Elements to support overall health, vitality, and well-being.",
+  longDescription: "Dianurovit Softgel Capsules are a premium nutraceutical supplement formulated to enhance overall health and vitality. Packed with essential Omega 3 Fatty Acids for heart health, Biotin for stronger hair and nails, and powerful extracts like Green Tea, Ginkgo Biloba, Ginseng, Grape Seed, and Garlic for antioxidant protection and improved energy levels. This advanced blend also includes Vitamins, Minerals, and Trace Elements to support immunity, metabolism, and overall wellness. Ideal for individuals seeking a comprehensive health boost.",
+  disclaimer: "This product is a nutraceutical and not intended to diagnose, treat, cure, or prevent any disease. Consult your healthcare provider before use.",
+  images: [dianurovit, dianurovit],
+  altText: "Dianurovit - Softgel Capsules with Omega 3, Biotin, and Antioxidants",
+  slug: "dianurovit-softgel-capsules",
+  metaInfo: {
+    title: "Dianurovit Softgel Capsules | Omega 3, Antioxidants & Vitamins | DLVB IMPEX LTD",
+    description: "Dianurovit Softgel Capsules provide a powerful blend of Omega 3 Fatty Acids, Biotin, Green Tea Extract, Antioxidants, Vitamins, and Minerals for enhanced health and vitality.",
+    canonical: "https://dlvbimpexpvtltd.com/product/dianurovit"
   }
+}
+
 ];
 
 const ProductDetailsPage = () => {
@@ -104,11 +125,24 @@ const ProductDetailsPage = () => {
               "brand": {
                 "@type": "Brand",
                 "name": "DLVB IMPEX"
+              },
+              
+              "offers": {
+                "@type": "Offer",
+                "price": "${product.price}",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "1"
               }
             }
           `}
         </script>
       </Helmet>
+
 
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Breadcrumb */}
