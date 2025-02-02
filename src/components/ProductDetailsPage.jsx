@@ -67,14 +67,14 @@ const products = [
   name: "Dianurovit",
   price: 545,
   description: "Dianurovit Softgel Capsules combine Omega 3 Fatty Acids, Biotin, Green Tea Extract, Ginkgo Biloba Extract, Ginseng Extract, Grape Seed Extract, Garlic Extract, Antioxidants, Vitamins, Minerals, and Trace Elements to support overall health, vitality, and well-being.",
-  longDescription: "Dianurovit Softgel Capsules are a premium nutraceutical supplement formulated to enhance overall health and vitality. Packed with essential Omega 3 Fatty Acids for heart health, Biotin for stronger hair and nails, and powerful extracts like Green Tea, Ginkgo Biloba, Ginseng, Grape Seed, and Garlic for antioxidant protection and improved energy levels. This advanced blend also includes Vitamins, Minerals, and Trace Elements to support immunity, metabolism, and overall wellness. Ideal for individuals seeking a comprehensive health boost.",
+  longDescription: "Dianurovit Softgel Capsules are a powerful blend of Omega 3 Fatty Acids, Ginseng, Green Tea Extract, Ginkgo Biloba Extract, Grape Seed Extract, Guggul Extract, Garlic Extract, Multivitamins, Multiminerals, and Antioxidants. These ingredients work together to enhance heart health, maintain vital organ functions, improve blood circulation, and strengthen the immune system. The capsules also offer antioxidant protection to combat free radicals and support overall wellness.",
   disclaimer: "This product is a nutraceutical and not intended to diagnose, treat, cure, or prevent any disease. Consult your healthcare provider before use.",
   images: [dianurovit, dianurovit],
-  altText: "Dianurovit - Softgel Capsules with Omega 3, Biotin, and Antioxidants",
+  altText: "Dianurovit Softgel Capsules - Heart Health, Immunity Boost, and Antioxidant Support",
   slug: "dianurovit-softgel-capsules",
   metaInfo: {
-    title: "Dianurovit Softgel Capsules | Omega 3, Antioxidants & Vitamins | DLVB IMPEX LTD",
-    description: "Dianurovit Softgel Capsules provide a powerful blend of Omega 3 Fatty Acids, Biotin, Green Tea Extract, Antioxidants, Vitamins, and Minerals for enhanced health and vitality.",
+    title: "Dianurovit Softgel Capsules | Heart Health & Immunity Boost | DLVB IMPEX LTD",
+    description: "Dianurovit Softgel Capsules provide Omega 3, Ginseng, Green Tea Extract, and Antioxidants to improve heart health, boost immunity, and protect cells from free radical damage.",
     canonical: "https://dlvbimpexpvtltd.com/product/dianurovit"
   }
 }
