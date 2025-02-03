@@ -228,7 +228,7 @@ const ContactPage = () => {
         <div className="space-y-4">
           {[
             { icon: Phone, text: "+91 83743 99149" },
-            { icon: Mail, text: "info.dlvbimpexpvtltd@gmail.com" },
+            { icon: Mail, text: "info@dlvbimpex.com" },
             { icon: MapPin, text: "Hyderabad" },
           ].map((item, index) => (
             <motion.div

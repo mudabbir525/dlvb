@@ -4,6 +4,84 @@ import { Helmet } from "react-helmet-async";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import { Phone, Mail, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+
+
+ const Footer = () => (
+  <motion.footer
+    className="bg-gray-900 text-white py-16"
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+  >
+    <div className="max-w-7xl mx-auto px-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold mb-6">DLVB IMPEX PVT. LTD.</h3>
+          <p className="text-gray-300 text-lg">Crafting Solutions for a Healthier Future</p>
+        </motion.div>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+          <ul className="space-y-4">
+            {[
+              { label: "Explore Products", to: "/products" },
+              { label: "About", to: "/about" },
+            ].map((item) => (
+              <motion.li
+                key={item.label}
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Link
+                  to={item.to}
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {item.label}
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <h3 className="text-xl font-bold mb-6">Contact Info</h3>
+          <div className="space-y-4">
+            {[
+              { icon: Phone, text: "+91 83743 99149" },
+              { icon: Mail, text: "info@dlvbimpex.com" },
+              { icon: MapPin, text: "Hyderabad" },
+            ].map((item, index) => (
+              <motion.li
+                key={index}
+                className="flex items-center gap-3 text-gray-300 list-none"
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.text}</span>
+              </motion.li>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  </motion.footer>
+);
 
 const ProductDetailsPage = () => {
   const { productId } = useParams();
@@ -93,8 +171,11 @@ const ProductDetailsPage = () => {
     );
   }
 
+ 
+
   const images = [product.image_address1, product.image_address2].filter(Boolean);
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100">
       <div className="sticky top-0 z-50">
         <Navbar />
@@ -189,12 +270,12 @@ const ProductDetailsPage = () => {
               <p className="text-gray-600">{product.long_description}</p>
             </div>
 
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-3">
                 Important Information
               </h2>
               <p className="text-gray-600 italic">{product.disclaimer}</p>
-            </div>
+            </div> */}
 
             <div className="mt-8 p-4 bg-blue-50 rounded-lg">
               <h3 className="text-lg font-semibold text-blue-800 mb-2">
@@ -214,12 +295,12 @@ const ProductDetailsPage = () => {
               Other Products
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {products.map((otherProduct) => (
                 <Link
                   to={`/product/${otherProduct.slug}`}
                   key={otherProduct.id}
-                  className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white rounded-xl  overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="aspect-square bg-white p-4 flex items-center justify-center">
                     <img
@@ -242,7 +323,10 @@ const ProductDetailsPage = () => {
           </div>
         )}
       </div>
+
+    
     </div>
+    <Footer /></>
   );
 };
 
