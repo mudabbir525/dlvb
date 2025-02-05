@@ -10,11 +10,11 @@ const API_BASE_URL = 'https://dlvbimpexpvtltd.com/backend';
 const UPLOADS_BASE_URL = 'https://dlvbimpexpvtltd.com/backend/uploads';
 
 const getImageUrl = (imagePath) => {
-        if (!imagePath) return '';
-        // Extract just the filename from the path
-        const filename = imagePath.split('/').pop();
-        return `${UPLOADS_BASE_URL}/${filename}`;
-    };
+  if (!imagePath) return '';
+  // Extract just the filename from the path
+  const filename = imagePath.split('/').pop();
+  return `${UPLOADS_BASE_URL}/${filename}`;
+};
 
 const ProductCard = ({ product, index, onClick }) => (
   <motion.div
@@ -29,7 +29,7 @@ const ProductCard = ({ product, index, onClick }) => (
         src={getImageUrl(product.image_address1)}
         alt={product.altText || product.name}
         className="w-full h-full object-contain"
-      
+
       />
     </div>
     <div className="p-6">
@@ -134,7 +134,12 @@ const ProductsPage = () => {
         if (!Array.isArray(data)) {
           throw new Error('Invalid data format received');
         }
-        setProducts(data);
+
+        const sortedProducts = [...data].sort((a, b) =>
+          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+        );
+        setProducts(sortedProducts);
+
       } catch (err) {
         console.error('Error fetching products:', err);
         setError(err.message);
@@ -158,7 +163,7 @@ const ProductsPage = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-200 to-pink-100">
         <div className="text-2xl text-red-600 mb-4">Error: {error}</div>
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
         >
@@ -221,7 +226,7 @@ const ProductsPage = () => {
           </div>
         </main>
 
-        
+
       </div>
       <Footer />
     </>

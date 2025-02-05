@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Save, Image } from 'lucide-react';
+import { Save, Image, AlertCircle } from 'lucide-react';
 
 const BASE_URL = 'https://dlvbimpexpvtltd.com/backend';
 
@@ -19,12 +19,18 @@ const MedicationEdit = () => {
         meta_info_canonical: ''
     });
 
-    const [image1Preview, setImage1Preview] = useState(null);
-    const [image2Preview, setImage2Preview] = useState(null);
+    const [currentImages, setCurrentImages] = useState({
+        image1: '',
+        image2: ''
+    });
+    
     const [files, setFiles] = useState({
         image1: null,
         image2: null
     });
+    
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchMedication();
@@ -32,32 +38,38 @@ const MedicationEdit = () => {
 
     const fetchMedication = async () => {
         try {
+            setLoading(true);
             const response = await fetch(`${BASE_URL}/update.php?id=${id}`);
             const data = await response.json();
 
             if (data.error) {
-                alert('Error fetching medication');
+                setError(data.error);
                 return;
             }
 
             setFormData({
-                name: data.name,
-                price: data.price,
-                description: data.description,
-                long_description: data.long_description,
-                disclaimer: data.disclaimer,
-                alt_text: data.alt_text,
-                slug: data.slug,
-                meta_info_title: data.meta_info_title,
-                meta_info_description: data.meta_info_description,
-                meta_info_canonical: data.meta_info_canonical
+                name: data.name || '',
+                price: data.price || '',
+                description: data.description || '',
+                long_description: data.long_description || '',
+                disclaimer: data.disclaimer || '',
+                alt_text: data.alt_text || '',
+                slug: data.slug || '',
+                meta_info_title: data.meta_info_title || '',
+                meta_info_description: data.meta_info_description || '',
+                meta_info_canonical: data.meta_info_canonical || ''
             });
 
-            setImage1Preview(data.image_address1);
-            setImage2Preview(data.image_address2);
+            // Store current image paths
+            setCurrentImages({
+                image1: data.image_address1 || '',
+                image2: data.image_address2 || ''
+            });
+
         } catch (error) {
-            console.error('Error:', error);
-            alert('Error fetching medication');
+            setError('Failed to fetch medication data');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -72,36 +84,49 @@ const MedicationEdit = () => {
     const handleImageChange = (e, imageNum) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                setError(`${imageNum === 'image1' ? 'Image 1' : 'Image 2'} must be less than 5MB`);
+                return;
+            }
+
             setFiles(prev => ({
                 ...prev,
                 [imageNum]: file
             }));
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                if (imageNum === 'image1') {
-                    setImage1Preview(reader.result);
-                } else {
-                    setImage2Preview(reader.result);
-                }
-            };
-            reader.readAsDataURL(file);
         }
+    };
+
+    const getImagePreview = (imageNum) => {
+        const file = files[imageNum];
+        if (file) {
+            return URL.createObjectURL(file);
+        }
+        return currentImages[imageNum] ? `${BASE_URL}/${currentImages[imageNum]}` : null;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const formDataToSend = new FormData();
-        Object.keys(formData).forEach(key => {
-            formDataToSend.append(key, formData[key]);
-        });
-
-        formDataToSend.append('id', id);
-        if (files.image1) formDataToSend.append('image1', files.image1);
-        if (files.image2) formDataToSend.append('image2', files.image2);
+        setError('');
+        setLoading(true);
 
         try {
+            const formDataToSend = new FormData();
+            
+            // Append all text fields
+            Object.keys(formData).forEach(key => {
+                formDataToSend.append(key, formData[key]);
+            });
+
+            formDataToSend.append('id', id);
+            
+            // Only append images if they were changed
+            if (files.image1) {
+                formDataToSend.append('image1', files.image1);
+            }
+            if (files.image2) {
+                formDataToSend.append('image2', files.image2);
+            }
+
             const response = await fetch(`${BASE_URL}/update.php`, {
                 method: 'POST',
                 body: formDataToSend
@@ -109,22 +134,36 @@ const MedicationEdit = () => {
 
             const data = await response.json();
             if (data.success) {
-                alert('Medication updated successfully!');
-                window.location.href = '/';
+                window.location.href = '/sid';
             } else {
-                alert(data.error || 'Error updating medication');
+                setError(data.error || 'Error updating medication');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Error updating medication');
+            setError('Failed to update medication');
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loading && !formData.name) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-6">Edit Medication</h1>
 
-            {/* Form JSX structure similar to MedicationForm but with a Save button instead of Add */}
+            {error && (
+                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                    <AlertCircle className="w-5 h-5" />
+                    <span>{error}</span>
+                </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -195,15 +234,24 @@ const MedicationEdit = () => {
                         <div className="border-2 border-dashed rounded-lg p-4">
                             <input
                                 type="file"
+                                value={formData.image1}
                                 onChange={(e) => handleImageChange(e, 'image1')}
                                 className="hidden"
                                 id="image1"
                                 accept="image/*"
-                                required
                             />
-                            <label htmlFor="image1" className="cursor-pointer">
-                                {image1Preview ? (
-                                    <img src={image1Preview} alt="Preview" className="max-h-40 mx-auto" />
+                            <label htmlFor="image1" className="cursor-pointer block">
+                                {getImagePreview('image1') ? (
+                                    <div className="relative">
+                                        <img 
+                                            src={getImagePreview('image1')} 
+                                            alt="Preview" 
+                                            className="max-h-40 mx-auto"
+                                        />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 flex items-center justify-center">
+                                            <span className="text-sm text-gray-700">Click to change</span>
+                                        </div>
+                                    </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
                                         <Image className="w-12 h-12 text-gray-400" />
@@ -219,14 +267,24 @@ const MedicationEdit = () => {
                         <div className="border-2 border-dashed rounded-lg p-4">
                             <input
                                 type="file"
+                                value={formData.image2}
                                 onChange={(e) => handleImageChange(e, 'image2')}
                                 className="hidden"
                                 id="image2"
                                 accept="image/*"
                             />
-                            <label htmlFor="image2" className="cursor-pointer">
-                                {image2Preview ? (
-                                    <img src={image2Preview} alt="Preview" className="max-h-40 mx-auto" />
+                            <label htmlFor="image2" className="cursor-pointer block">
+                                {getImagePreview('image2') ? (
+                                    <div className="relative">
+                                        <img 
+                                            src={getImagePreview('image2')} 
+                                            alt="Preview" 
+                                            className="max-h-40 mx-auto"
+                                        />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 flex items-center justify-center">
+                                            <span className="text-sm text-gray-700">Click to change</span>
+                                        </div>
+                                    </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
                                         <Image className="w-12 h-12 text-gray-400" />
@@ -304,10 +362,15 @@ const MedicationEdit = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2"
+                    disabled={loading}
+                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <Save className="w-5 h-5" />
-                    Save Changes
+                    {loading ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    ) : (
+                        <Save className="w-5 h-5" />
+                    )}
+                    {loading ? 'Saving...' : 'Save Changes'}
                 </button>
             </form>
         </div>
