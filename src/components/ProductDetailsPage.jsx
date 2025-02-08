@@ -106,7 +106,7 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/get.php`);
+        const response = await fetch(`${API_BASE_URL}/gett.php`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

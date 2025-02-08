@@ -124,29 +124,52 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/get.php`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (!Array.isArray(data)) {
-          throw new Error('Invalid data format received');
-        }
+//     const fetchProducts = async () => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/get.php`);
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       throw new Error(`HTTP Error ${response.status}: ${errorText}`);
+//     }
+//     const data = await response.json();
+//     if (!Array.isArray(data)) {
+//       throw new Error("Invalid data format received");
+//     }
+//     setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
+//   } catch (err) {
+//     console.error("Error fetching products:", err);
+//     setError(err.message);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
-        const sortedProducts = [...data].sort((a, b) =>
-          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-        );
-        setProducts(sortedProducts);
-
-      } catch (err) {
-        console.error('Error fetching products:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+const fetchProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/gett.php`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP Error ${response.status}: ${errorText}`);
+    }
+    const result = await response.json();
+    // Check if we have data in the new format
+    const data = result.data || result;
+    if (!Array.isArray(data)) {
+      throw new Error("Invalid data format received");
+    }
+    setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
+    
+    // Optional: Log debug info if available
+    if (result.debug) {
+      console.log('Debug info:', result.debug);
+    }
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchProducts();
   }, []);
@@ -186,6 +209,7 @@ const ProductsPage = () => {
           content="DLVB IMPEX, healthcare products, Livtroc, Nuhemetide, Pancreon-25000, liver health, iron supplements, digestive enzymes"
         />
         <link rel="canonical" href="https://dlvbimpexpvtltd.com/products" />
+        
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Advanced Health Care Products | DLVB IMPEX LTD" />
         <meta property="og:description" content="Explore DLVB IMPEX LTD's advanced healthcare products designed for innovation, safety, and excellence." />
