@@ -41,7 +41,7 @@ const ContactPage = () => {
       <main className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="text-center mt-28 mb-16">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">feel in Touch</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">Get in Touch</h1>
             <p className="text-xl text-gray-600">We're here to help and answer any questions you might have</p>
           </div>
 

@@ -211,41 +211,31 @@ const ProductDetailsPage = () => {
           <meta property="og:type" content="product" />
           <meta name="robots" content="index, follow" />
           <script type="application/ld+json">
-  {`
-    {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "${product.name}",
-  "image": ["${getImageUrl(product.image_address1)}"],
-  "description": "${product.description || 'No description available.'}",
-  "brand": {
-    "@type": "Brand",
-    "name": "DLVB IMPEX"
-  },
-  "manufacturer": {
-    "@type": "Organization",
-    "name": "DLVB IMPEX PVT. LTD."
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "${product.price || 'N/A'}",
-    "priceCurrency": "INR",
-    "availability": "https://schema.org/InStock",
-    "seller": {
-      "@type": "Organization",
-      "name": "DLVB IMPEX PVT. LTD."
-    }
-  },
-  "category": "Pharmaceutical",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "1"
-  }
-}
-
-  `}
-</script>
+            {`
+        {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "${product.name}",
+          "image": "${getImageUrl(product.image_address1)}",
+          "description": "${product.description}",
+          "brand": {
+            "@type": "Brand",
+            "name": "DLVB IMPEX"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "${product.price}",
+            "priceCurrency": "INR",
+            "availability": "https://schema.org/InStock"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "reviewCount": "1"
+          }
+        }
+      `}
+          </script>
         </Helmet>
       )}
 
