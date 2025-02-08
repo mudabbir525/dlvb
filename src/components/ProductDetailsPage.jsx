@@ -83,57 +83,72 @@ import { motion } from "framer-motion";
   </motion.footer>
 );
 
+const API_BASE_URL = 'https://dlvbimpexpvtltd.com/backend';
+const UPLOADS_BASE_URL = 'https://dlvbimpexpvtltd.com/backend/uploads';
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  const filename = imagePath.split('/').pop();
+  return `${UPLOADS_BASE_URL}/${filename}`;
+};
+
 const ProductDetailsPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [products, setProducts] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-
-  const API_BASE_URL = 'https://dlvbimpexpvtltd.com/backend';
-  const UPLOADS_BASE_URL = 'https://dlvbimpexpvtltd.com/backend/uploads';
-
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    // Extract just the filename from the path
-    const filename = imagePath.split('/').pop();
-    return `${UPLOADS_BASE_URL}/${filename}`;
-  };
-
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/gett.php`);
+      
+    try {
+        setLoading(true);
+        const response = await fetch(`${API_BASE_URL}/fuck.php?timestamp=${new Date().getTime()}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        if (!Array.isArray(data)) {
-          throw new Error('Invalid data format received');
+
+        const result = await response.json();
+        
+        // Handle the new API response structure
+        const productsArray = result.data || [];
+        
+        if (!Array.isArray(productsArray)) {
+          throw new Error('Invalid data format: expected an array');
         }
 
-        // Find the current product based on slug
-        const currentProduct = data.find(p => p.slug === productId);
-        if (currentProduct) {
-          // Process image URLs
-          currentProduct.images = [
-            currentProduct.image_address1,
-            currentProduct.image_address2
-          ]
-            .filter(Boolean)
-            .map(getImageUrl);
-
-          setProduct(currentProduct);
-
-          // Set other products (excluding current product)
-          const otherProducts = data.filter(p => p.slug !== productId);
-          setProducts(otherProducts);
-        } else {
-          throw new Error('Product not found');
+        if (productsArray.length === 0) {
+          throw new Error('No products found in the response');
         }
+
+        // Find the current product based on productId from URL
+        const currentProduct = productsArray.find(p => p.slug === productId || p.id === productId);
+        
+        if (!currentProduct) {
+          throw new Error(`Product with ID "${productId}" not found`);
+        }
+
+        // Process images for the current product
+        currentProduct.images = [
+          currentProduct.image_address1,
+          currentProduct.image_address2
+        ].filter(Boolean).map(getImageUrl);
+
+        setProduct(currentProduct);
+
+        // Set other products (excluding current product)
+        const otherProducts = productsArray.filter(p => 
+          p.id !== currentProduct.id && p.slug !== currentProduct.slug
+        );
+        setProducts(otherProducts);
+
+        // Log debug info if available
+        if (result.debug) {
+          console.log('Debug info:', result.debug);
+        }
+
       } catch (err) {
         console.error('Error fetching products:', err);
         setError(err.message);
@@ -142,7 +157,9 @@ const ProductDetailsPage = () => {
       }
     };
 
-    fetchProducts();
+    if (productId) {
+      fetchProducts();
+    }
   }, [productId]);
 
 

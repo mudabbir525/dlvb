@@ -101,7 +101,11 @@ const MedicationEdit = () => {
         if (file) {
             return URL.createObjectURL(file);
         }
-        return currentImages[imageNum] ? `${BASE_URL}/${currentImages[imageNum]}` : null;
+        const currentImage = currentImages[imageNum];
+        if (currentImage) {
+            return currentImage.startsWith('uploads/') ? `${BASE_URL}/${currentImage}` : `${BASE_URL}/uploads/${currentImage}`;
+        }
+        return null;
     };
 
     const handleSubmit = async (e) => {
@@ -152,6 +156,7 @@ const MedicationEdit = () => {
             </div>
         );
     }
+
 
     return (
         <div className="max-w-4xl mx-auto p-6">

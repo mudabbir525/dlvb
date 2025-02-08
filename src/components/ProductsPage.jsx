@@ -124,41 +124,29 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-//     const fetchProducts = async () => {
-//   try {
-//     const response = await fetch(`${API_BASE_URL}/get.php`);
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       throw new Error(`HTTP Error ${response.status}: ${errorText}`);
-//     }
-//     const data = await response.json();
-//     if (!Array.isArray(data)) {
-//       throw new Error("Invalid data format received");
-//     }
-//     setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
-//   } catch (err) {
-//     console.error("Error fetching products:", err);
-//     setError(err.message);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+    
+
 
 const fetchProducts = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/gett.php`);
+
+    try {
+        setLoading(true);
+        const response = await fetch(`${API_BASE_URL}/fuck.php?timestamp=${new Date().getTime()}`);
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`HTTP Error ${response.status}: ${errorText}`);
     }
     const result = await response.json();
+    console.log("API Response:", result); // Log the API response
+
     // Check if we have data in the new format
     const data = result.data || result;
     if (!Array.isArray(data)) {
       throw new Error("Invalid data format received");
     }
+    console.log("Fetched Products:", data); // Log fetched products
     setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
-    
+
     // Optional: Log debug info if available
     if (result.debug) {
       console.log('Debug info:', result.debug);
