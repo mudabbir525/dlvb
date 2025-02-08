@@ -197,7 +197,6 @@ const fetchProducts = async () => {
           content="DLVB IMPEX, healthcare products, Livtroc, Nuhemetide, Pancreon-25000, liver health, iron supplements, digestive enzymes"
         />
         <link rel="canonical" href="https://dlvbimpexpvtltd.com/products" />
-        
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Advanced Health Care Products | DLVB IMPEX LTD" />
         <meta property="og:description" content="Explore DLVB IMPEX LTD's advanced healthcare products designed for innovation, safety, and excellence." />
