@@ -199,18 +199,18 @@ const ProductDetailsPage = () => {
       </div>
 
       {product && (
-        <Helmet>
-          <title>{product.meta_info_title}</title>
-          <meta name="description" content={product.meta_info_description} />
-          <link rel="canonical" href={product.meta_info_canonical} />
-          <meta name="keywords" content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, advanced healthcare, ${product.slug}`} />
-          <meta property="og:title" content={product.meta_info_title} />
-          <meta property="og:description" content={product.meta_info_description} />
-          <meta property="og:image" content={getImageUrl(product.image_address1)} />
-          <meta property="og:url" content={product.meta_info_canonical} />
-          <meta property="og:type" content="product" />
-          <meta name="robots" content="index, follow" />
-          <script type="application/ld+json">
+       <Helmet>
+        <title>{product.metaInfo.title}</title>
+        <meta name="description" content={product.metaInfo.description} />
+        <link rel="canonical" href={product.metaInfo.canonical} />
+        <meta name="keywords" content={`DLVB IMPEX, ${product.name}, ${product.name.toLowerCase()}, advanced healthcare, ${product.slug}`} />
+        <meta property="og:title" content={product.metaInfo.title} />
+        <meta property="og:description" content={product.metaInfo.description} />
+        <meta property="og:image" content={product.images[0]} />
+        <meta property="og:url" content={product.metaInfo.canonical} />
+        <meta property="og:type" content="product" />
+        <meta name="robots" content="index, follow" />
+        <script type="application/ld+json">
           {`
             {
               "@context": "https://schema.org",
@@ -221,12 +221,23 @@ const ProductDetailsPage = () => {
               "brand": {
                 "@type": "Brand",
                 "name": "DLVB IMPEX"
+              },
+              
+              "offers": {
+                "@type": "Offer",
+                "price": "${product.price}",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "1"
               }
             }
           `}
         </script>
-
-        </Helmet>
+      </Helmet>
         
       )}
 
