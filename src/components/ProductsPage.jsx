@@ -11,7 +11,6 @@ const UPLOADS_BASE_URL = 'https://dlvbimpexpvtltd.com/backend/uploads';
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
-  // Extract just the filename from the path
   const filename = imagePath.split('/').pop();
   return `${UPLOADS_BASE_URL}/${filename}`;
 };
@@ -29,7 +28,6 @@ const ProductCard = ({ product, index, onClick }) => (
         src={getImageUrl(product.image_address1)}
         alt={product.altText || product.name}
         className="w-full h-full object-contain"
-
       />
     </div>
     <div className="p-6">
@@ -37,6 +35,15 @@ const ProductCard = ({ product, index, onClick }) => (
       <p className="text-gray-600 mb-4 line-clamp-3">{product.description}</p>
       {product.disclaimer && (
         <p className="text-sm text-gray-500 italic line-clamp-2">{product.disclaimer}</p>
+      )}
+      {product.offers && (
+        <p className="text-sm text-gray-500">Offers: {product.offers}</p>
+      )}
+      {product.review && (
+        <p className="text-sm text-gray-500">Review: {product.review}</p>
+      )}
+      {product.aggregateRating && (
+        <p className="text-sm text-gray-500">Rating: {product.aggregateRating}</p>
       )}
     </div>
   </motion.div>
@@ -124,40 +131,34 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    
-
-
-const fetchProducts = async () => {
-
-    try {
+    const fetchProducts = async () => {
+      try {
         setLoading(true);
         const response = await fetch(`${API_BASE_URL}/fuck.php?timestamp=${new Date().getTime()}`);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP Error ${response.status}: ${errorText}`);
-    }
-    const result = await response.json();
-    console.log("API Response:", result); // Log the API response
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP Error ${response.status}: ${errorText}`);
+        }
+        const result = await response.json();
+        console.log("API Response:", result);
 
-    // Check if we have data in the new format
-    const data = result.data || result;
-    if (!Array.isArray(data)) {
-      throw new Error("Invalid data format received");
-    }
-    console.log("Fetched Products:", data); // Log fetched products
-    setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
+        const data = result.data || result;
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format received");
+        }
+        console.log("Fetched Products:", data);
+        setProducts(data.sort((a, b) => a.name.localeCompare(b.name)));
 
-    // Optional: Log debug info if available
-    if (result.debug) {
-      console.log('Debug info:', result.debug);
-    }
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+        if (result.debug) {
+          console.log('Debug info:', result.debug);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchProducts();
   }, []);
@@ -203,7 +204,6 @@ const fetchProducts = async () => {
         <meta property="og:url" content="https://dlvbimpexpvtltd.com/products" />
         <meta name="robots" content="index, follow" />
       </Helmet>
-      
 
       <div className="relative min-h-screen">
         <div className="sticky top-0 z-50">
@@ -237,8 +237,6 @@ const fetchProducts = async () => {
             </div>
           </div>
         </main>
-
-
       </div>
       <Footer />
     </>
