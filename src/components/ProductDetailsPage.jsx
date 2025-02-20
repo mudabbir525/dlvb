@@ -144,10 +144,11 @@ const ProductDetailsPage = () => {
 
         // Create metaInfo if it doesn't exist
         currentProduct.metaInfo = currentProduct.metaInfo || {
-          title: currentProduct.name || "Product Details",
-          description: currentProduct.description || "View our product details",
-          canonical: window.location.href,
-        };
+    title: currentProduct.meta_info_title || currentProduct.name || "Product Details",
+    description: currentProduct.meta_info_description || currentProduct.description || "View our product details",
+    canonical: currentProduct.meta_info_canonical || window.location.href,
+};
+
 
         setProduct(currentProduct);
 
