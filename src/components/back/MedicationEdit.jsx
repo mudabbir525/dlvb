@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Save, Image, AlertCircle } from 'lucide-react';
 
 const BASE_URL = 'https://dlvbimpexpvtltd.com/backend';
 
 const MedicationEdit = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    
     const [formData, setFormData] = useState({
         name: '',
         price: '',
@@ -33,6 +35,10 @@ const MedicationEdit = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (!id) {
+            setError('Medication ID is required');
+            return;
+        }
         fetchMedication();
     }, [id]);
 
@@ -40,11 +46,13 @@ const MedicationEdit = () => {
         try {
             setLoading(true);
             const response = await fetch(`${BASE_URL}/update.php?id=${id}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
 
             if (data.error) {
-                setError(data.error);
-                return;
+                throw new Error(data.error);
             }
 
             setFormData({
@@ -60,14 +68,13 @@ const MedicationEdit = () => {
                 meta_info_canonical: data.meta_info_canonical || ''
             });
 
-            // Store current image paths
             setCurrentImages({
                 image1: data.image_address1 || '',
                 image2: data.image_address2 || ''
             });
 
         } catch (error) {
-            setError('Failed to fetch medication data');
+            setError(error.message || 'Failed to fetch medication data');
         } finally {
             setLoading(false);
         }
@@ -101,29 +108,40 @@ const MedicationEdit = () => {
         if (file) {
             return URL.createObjectURL(file);
         }
-        const currentImage = currentImages[imageNum];
-        if (currentImage) {
-            return currentImage.startsWith('uploads/') ? `${BASE_URL}/${currentImage}` : `${BASE_URL}/uploads/${currentImage}`;
+        if (currentImages[imageNum]) {
+            return `${BASE_URL}/${currentImages[imageNum].replace(/^\//, '')}`;
         }
         return null;
     };
 
-    const handleSubmit = async (e) => {
+     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!id) {
+            setError('Medication ID is required');
+            return;
+        }
+
         setError('');
         setLoading(true);
 
         try {
             const formDataToSend = new FormData();
             
-            // Append all text fields
-            Object.keys(formData).forEach(key => {
-                formDataToSend.append(key, formData[key]);
-            });
-
-            formDataToSend.append('id', id);
+            // Ensure ID is sent as a number
+            formDataToSend.append('id', id.toString());
             
-            // Only append images if they were changed
+            // Append all text fields with proper validation
+            Object.entries(formData).forEach(([key, value]) => {
+                // Ensure price is a valid number
+                if (key === 'price') {
+                    const numericPrice = parseFloat(value);
+                    formDataToSend.append(key, isNaN(numericPrice) ? '0' : numericPrice.toString());
+                } else {
+                    formDataToSend.append(key, value ? value.toString() : '');
+                }
+            });
+            
+            // Handle image uploads
             if (files.image1) {
                 formDataToSend.append('image1', files.image1);
             }
@@ -131,22 +149,51 @@ const MedicationEdit = () => {
                 formDataToSend.append('image2', files.image2);
             }
 
-            const response = await fetch(`${BASE_URL}/update.php`, {
-                method: 'POST',
-                body: formDataToSend
+            // Log the data being sent (for debugging)
+            console.log('Sending data:', {
+                id,
+                ...Object.fromEntries(formDataToSend.entries())
             });
 
-            const data = await response.json();
+            const response = await fetch(`${BASE_URL}/update.php`, {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Failed to parse response:', responseText);
+                throw new Error('Invalid server response');
+            }
+
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+
             if (data.success) {
-                window.location.href = '/sid';
+                navigate('/sid');
             } else {
-                setError(data.error || 'Error updating medication');
+                throw new Error(data.error || 'Failed to update medication');
             }
         } catch (error) {
-            setError('Failed to update medication');
+            console.error('Submission error:', error);
+            setError(error.message || 'Failed to update medication');
         } finally {
             setLoading(false);
         }
+    };
+
+    // Add form validation before submission
+    const validateForm = () => {
+        if (!formData.name?.trim()) return 'Name is required';
+        if (!formData.price || isNaN(parseFloat(formData.price))) return 'Valid price is required';
+        if (!formData.description?.trim()) return 'Description is required';
+        if (!formData.slug?.trim()) return 'Slug is required';
+        if (!formData.meta_info_title?.trim()) return 'Meta title is required';
+        return null;
     };
 
     if (loading && !formData.name) {
@@ -156,7 +203,6 @@ const MedicationEdit = () => {
             </div>
         );
     }
-
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -169,7 +215,15 @@ const MedicationEdit = () => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={async (e) => {
+                e.preventDefault();
+                const validationError = validateForm();
+                if (validationError) {
+                    setError(validationError);
+                    return;
+                }
+                await handleSubmit(e);
+            }} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-medium mb-2">Name</label>
@@ -239,7 +293,6 @@ const MedicationEdit = () => {
                         <div className="border-2 border-dashed rounded-lg p-4">
                             <input
                                 type="file"
-                                value={formData.image1}
                                 onChange={(e) => handleImageChange(e, 'image1')}
                                 className="hidden"
                                 id="image1"
@@ -272,7 +325,6 @@ const MedicationEdit = () => {
                         <div className="border-2 border-dashed rounded-lg p-4">
                             <input
                                 type="file"
-                                value={formData.image2}
                                 onChange={(e) => handleImageChange(e, 'image2')}
                                 className="hidden"
                                 id="image2"
