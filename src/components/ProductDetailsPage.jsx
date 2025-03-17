@@ -298,7 +298,7 @@ const ProductDetailsPage = () => {
                     >
                       <img 
                         src={image} 
-                        alt={`Thumbnail ${index + 1}`}
+                        alt={product.alt_text || product.name}
                         className="w-full h-full object-contain" 
                       />
                     </button>
