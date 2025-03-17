@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import EditMedication from './components/back/EditMedication';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -63,7 +64,7 @@ const publicRoutes = [
 const adminRoutes = [
   { path: '/siddesh', element: <MedicationForm /> },
   { path: '/sid', element: <MedicationsDisplay /> },
-  { path: '/edit/:id', element: <MedicationEdit /> },
+  { path: '/edit/:id', element: <EditMedication /> },
 ];
 
 const App = () => {

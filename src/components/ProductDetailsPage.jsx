@@ -144,11 +144,10 @@ const ProductDetailsPage = () => {
 
         // Create metaInfo if it doesn't exist
         currentProduct.metaInfo = currentProduct.metaInfo || {
-    title: currentProduct.meta_info_title || currentProduct.name || "Product Details",
-    description: currentProduct.meta_info_description || currentProduct.description || "View our product details",
-    canonical: currentProduct.meta_info_canonical || window.location.href,
-};
-
+          title: currentProduct.meta_info_title || currentProduct.name || "Product Details",
+          description: currentProduct.meta_info_description || currentProduct.description || "View our product details",
+          canonical: currentProduct.meta_info_canonical || window.location.href,
+        };
 
         setProduct(currentProduct);
 
@@ -203,7 +202,8 @@ const ProductDetailsPage = () => {
 
   const images = [product.image_address1, product.image_address2].filter(
     Boolean
-  );
+  ).map(getImageUrl);
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100">
@@ -273,27 +273,35 @@ const ProductDetailsPage = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-white p-8">
-              <img
-                src={getImageUrl(images[currentImageIndex])}
-                alt={product.alt_text || product.name}
-                className="w-full h-full object-contain"
-                loading="lazy"
-              />
-
+            <div className="flex flex-col">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-white p-8 mb-4">
+                <img
+                  src={images[currentImageIndex]}
+                  alt={product.alt_text || product.name}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Thumbnail Gallery */}
               {images.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  {images.map((_, index) => (
+                <div className="flex justify-center gap-4 mt-2">
+                  {images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`w-2 h-2 rounded-full ${
-                        currentImageIndex === index
-                          ? "bg-gray-800"
-                          : "bg-gray-300"
+                      className={`w-20 h-20 bg-white rounded-lg overflow-hidden p-2 ${
+                        currentImageIndex === index 
+                          ? "border-2 border-purple-500 shadow-md" 
+                          : "border border-gray-200"
                       }`}
-                      aria-label={`View image ${index + 1} of ${images.length}`}
-                    />
+                    >
+                      <img 
+                        src={image} 
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-contain" 
+                      />
+                    </button>
                   ))}
                 </div>
               )}
@@ -326,7 +334,7 @@ const ProductDetailsPage = () => {
             </div>
           </div>
 
-          {products.length > 0 && (
+          {/* {products.length > 0 && (
             <div className="mt-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-8">
                 Other Products
@@ -358,7 +366,7 @@ const ProductDetailsPage = () => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       <Footer />
