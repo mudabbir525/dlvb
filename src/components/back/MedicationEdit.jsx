@@ -18,7 +18,8 @@ const MedicationEdit = () => {
         slug: '',
         meta_info_title: '',
         meta_info_description: '',
-        meta_info_canonical: ''
+        meta_info_canonical: '',
+        meta_info_id: ''
     });
 
     const [currentImages, setCurrentImages] = useState({
@@ -33,6 +34,7 @@ const MedicationEdit = () => {
     
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState('');
 
     useEffect(() => {
         if (!id) {
@@ -45,7 +47,7 @@ const MedicationEdit = () => {
     const fetchMedication = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${BASE_URL}/update.php?id=${id}`);
+            const response = await fetch(`${BASE_URL}/get.php?id=${id}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -55,25 +57,31 @@ const MedicationEdit = () => {
                 throw new Error(data.error);
             }
 
+            if (!data.medication) {
+                throw new Error('No medication data found');
+            }
+
             setFormData({
-                name: data.name || '',
-                price: data.price || '',
-                description: data.description || '',
-                long_description: data.long_description || '',
-                disclaimer: data.disclaimer || '',
-                alt_text: data.alt_text || '',
-                slug: data.slug || '',
-                meta_info_title: data.meta_info_title || '',
-                meta_info_description: data.meta_info_description || '',
-                meta_info_canonical: data.meta_info_canonical || ''
+                name: data.medication.name || '',
+                price: data.medication.price || '',
+                description: data.medication.description || '',
+                long_description: data.medication.long_description || '',
+                disclaimer: data.medication.disclaimer || '',
+                alt_text: data.medication.alt_text || '',
+                slug: data.medication.slug || '',
+                meta_info_id: data.medication.meta_info_id || '',
+                meta_info_title: data.meta_info?.meta_info_title || '',
+                meta_info_description: data.meta_info?.meta_info_description || '',
+                meta_info_canonical: data.meta_info?.meta_info_canonical || ''
             });
 
             setCurrentImages({
-                image1: data.image_address1 || '',
-                image2: data.image_address2 || ''
+                image1: data.medication.image_address1 || '',
+                image2: data.medication.image_address2 || ''
             });
 
         } catch (error) {
+            console.error('Fetch error:', error);
             setError(error.message || 'Failed to fetch medication data');
         } finally {
             setLoading(false);
@@ -103,35 +111,48 @@ const MedicationEdit = () => {
         }
     };
 
-    const getImagePreview = (imageNum) => {
-        const file = files[imageNum];
-        if (file) {
-            return URL.createObjectURL(file);
+   const getImagePreview = (imageNum) => {
+    const file = files[imageNum];
+    if (file) {
+        return URL.createObjectURL(file);
+    }
+    if (currentImages[imageNum]) {
+        // Check if the path already contains "uploads/"
+        if (currentImages[imageNum].startsWith('uploads/')) {
+            return `${BASE_URL}/${currentImages[imageNum]}`;
+        } else {
+            return `${BASE_URL}/uploads/${currentImages[imageNum]}`;
         }
-        if (currentImages[imageNum]) {
-            return `${BASE_URL}/${currentImages[imageNum].replace(/^\//, '')}`;
-        }
-        return null;
-    };
+    }
+    return null;
+};
 
-     const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!id) {
-            setError('Medication ID is required');
+        
+        // Validate form first
+        const validationError = validateForm();
+        if (validationError) {
+            setError(validationError);
             return;
         }
 
         setError('');
+        setSuccess('');
         setLoading(true);
 
         try {
             const formDataToSend = new FormData();
             
-            // Ensure ID is sent as a number
+            // Append medication ID and meta_info_id
             formDataToSend.append('id', id.toString());
+            formDataToSend.append('meta_info_id', formData.meta_info_id.toString());
             
             // Append all text fields with proper validation
             Object.entries(formData).forEach(([key, value]) => {
+                // Skip meta_info_id as it's already added
+                if (key === 'meta_info_id') return;
+                
                 // Ensure price is a valid number
                 if (key === 'price') {
                     const numericPrice = parseFloat(value);
@@ -141,7 +162,7 @@ const MedicationEdit = () => {
                 }
             });
             
-            // Handle image uploads
+            // Handle image uploads - only append if new files are selected
             if (files.image1) {
                 formDataToSend.append('image1', files.image1);
             }
@@ -149,34 +170,30 @@ const MedicationEdit = () => {
                 formDataToSend.append('image2', files.image2);
             }
 
-            // Log the data being sent (for debugging)
-            console.log('Sending data:', {
-                id,
-                ...Object.fromEntries(formDataToSend.entries())
-            });
-
             const response = await fetch(`${BASE_URL}/update.php`, {
                 method: 'POST',
                 body: formDataToSend,
             });
 
-            const responseText = await response.text();
-            let data;
-            try {
-                data = JSON.parse(responseText);
-            } catch (e) {
-                console.error('Failed to parse response:', responseText);
-                throw new Error('Invalid server response');
+            if (!response.ok) {
+                const text = await response.text();
+                console.error('Failed response:', text);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            if (!response.ok) {
-                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
             }
 
             if (data.success) {
-                navigate('/sid');
+                setSuccess('Medication updated successfully');
+                setTimeout(() => {
+                    navigate('/display');
+                }, 1500);
             } else {
-                throw new Error(data.error || 'Failed to update medication');
+                throw new Error('Failed to update medication');
             }
         } catch (error) {
             console.error('Submission error:', error);
@@ -215,15 +232,13 @@ const MedicationEdit = () => {
                 </div>
             )}
 
-            <form onSubmit={async (e) => {
-                e.preventDefault();
-                const validationError = validateForm();
-                if (validationError) {
-                    setError(validationError);
-                    return;
-                }
-                await handleSubmit(e);
-            }} className="space-y-6">
+            {success && (
+                <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-green-700">
+                    <span>{success}</span>
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-medium mb-2">Name</label>

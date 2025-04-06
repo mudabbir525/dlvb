@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import EditMedication from './components/back/EditMedication';
+
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -48,7 +48,7 @@ const NotFound = lazy(() => import('./components/NotFound'));
 
 // Admin routes lazy loading
 const MedicationForm = lazy(() => import('./components/back/MedicationForm'));
-const MedicationsDisplay = lazy(() => import('./components/back/MedicationsDisplay'));
+const MedicationsDisplay = lazy(() => import('./components/back/Display'));
 const MedicationEdit = lazy(() => import('./components/back/MedicationEdit'));
 
 // Route configurations
@@ -63,8 +63,9 @@ const publicRoutes = [
 
 const adminRoutes = [
   { path: '/siddesh', element: <MedicationForm /> },
-  { path: '/sid', element: <MedicationsDisplay /> },
-  { path: '/edit/:id', element: <EditMedication /> },
+  // { path: '/sid', element: <MedicationsDisplay /> },
+  { path: '/edit/:id', element: <MedicationEdit /> },
+ { path: '/display', element: <MedicationsDisplay /> },
 ];
 
 const App = () => {
