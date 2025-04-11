@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft, Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import { Phone, Mail, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Footer = () => (
@@ -113,8 +112,6 @@ const ProductDetailsPage = () => {
         }
 
         const result = await response.json();
-
-        // Handle the new API response structure
         const productsArray = result.data || [];
 
         if (!Array.isArray(productsArray)) {
@@ -125,7 +122,7 @@ const ProductDetailsPage = () => {
           throw new Error("No products found in the response");
         }
 
-        // Find the current product based on productId from URL
+        // Find the current product
         const currentProduct = productsArray.find(
           (p) => p.slug === productId || p.id === productId
         );
@@ -134,15 +131,16 @@ const ProductDetailsPage = () => {
           throw new Error(`Product with ID "${productId}" not found`);
         }
 
-        // Process images for the current product
+        // Process all four images
         currentProduct.images = [
           currentProduct.image_address1,
           currentProduct.image_address2,
+          currentProduct.image_address3,
+          currentProduct.image_address4
         ]
           .filter(Boolean)
           .map(getImageUrl);
 
-        // Create metaInfo if it doesn't exist
         currentProduct.metaInfo = currentProduct.metaInfo || {
           title: currentProduct.meta_info_title || currentProduct.name || "Product Details",
           description: currentProduct.meta_info_description || currentProduct.description || "View our product details",
@@ -151,13 +149,11 @@ const ProductDetailsPage = () => {
 
         setProduct(currentProduct);
 
-        // Set other products (excluding current product)
         const otherProducts = productsArray.filter(
           (p) => p.id !== currentProduct.id && p.slug !== currentProduct.slug
         );
         setProducts(otherProducts);
 
-        // Log debug info if available
         if (result.debug) {
           console.log("Debug info:", result.debug);
         }
@@ -200,10 +196,6 @@ const ProductDetailsPage = () => {
     );
   }
 
-  const images = [product.image_address1, product.image_address2].filter(
-    Boolean
-  ).map(getImageUrl);
-
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-purple-200 to-pink-100">
@@ -235,30 +227,29 @@ const ProductDetailsPage = () => {
             <meta name="robots" content="index, follow" />
             <script type="application/ld+json">
               {`
-            {
-              "@context": "https://schema.org",
-              "@type": "Product",
-              "name": "${product.name}",
-              "image": "${product.images[0]}",
-              "description": "${product.description}",
-              "brand": {
-                "@type": "Brand",
-                "name": "DLVB IMPEX"
-              },
-              
-              "offers": {
-                "@type": "Offer",
-                "price": "${product.price || ""}",
-                "priceCurrency": "INR",
-                "availability": "https://schema.org/InStock"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "5",
-                "reviewCount": "1"
-              }
-            }
-          `}
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Product",
+                  "name": "${product.name}",
+                  "image": ${JSON.stringify(product.images)},
+                  "description": "${product.description}",
+                  "brand": {
+                    "@type": "Brand",
+                    "name": "DLVB IMPEX"
+                  },
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "${product.price || ""}",
+                    "priceCurrency": "INR",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "5",
+                    "reviewCount": "1"
+                  }
+                }
+              `}
             </script>
           </Helmet>
         )}
@@ -276,17 +267,38 @@ const ProductDetailsPage = () => {
             <div className="flex flex-col">
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-white p-8 mb-4">
                 <img
-                  src={images[currentImageIndex]}
+                  src={product.images[currentImageIndex]}
                   alt={product.alt_text || product.name}
                   className="w-full h-full object-contain"
                   loading="lazy"
                 />
+                
+                {/* {product.images.length > 1 && (
+                  <>
+                    <button 
+                      onClick={() => setCurrentImageIndex((prev) => 
+                        prev === 0 ? product.images.length - 1 : prev - 1
+                      )}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                    >
+                      <ChevronLeft className="w-6 h-6 text-gray-800" />
+                    </button>
+                    <button 
+                      onClick={() => setCurrentImageIndex((prev) => 
+                        prev === product.images.length - 1 ? 0 : prev + 1
+                      )}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                    >
+                      <ChevronRight className="w-6 h-6 text-gray-800" />
+                    </button>
+                  </>
+                )} */}
               </div>
               
               {/* Thumbnail Gallery */}
-              {images.length > 1 && (
-                <div className="flex justify-center gap-4 mt-2">
-                  {images.map((image, index) => (
+              {product.images.length > 1 && (
+                <div className="flex justify-center gap-4 mt-2 flex-wrap">
+                  {product.images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
@@ -298,8 +310,9 @@ const ProductDetailsPage = () => {
                     >
                       <img 
                         src={image} 
-                        alt={product.alt_text || product.name}
+                        alt={`${product.alt_text || product.name} - Image ${index + 1}`}
                         className="w-full h-full object-contain" 
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -326,47 +339,11 @@ const ProductDetailsPage = () => {
                   Medical Supervision Required
                 </h3>
                 <p className="text-blue-700">
-                  This product should only be used under proper medical
-                  supervision. Please consult with a healthcare professional
-                  before use.
+                  {product.disclaimer || "This product should only be used under proper medical supervision. Please consult with a healthcare professional before use."}
                 </p>
               </div>
             </div>
           </div>
-
-          {/* {products.length > 0 && (
-            <div className="mt-16">
-              <h2 className="text-3xl font-bold text-gray-800 mb-8">
-                Other Products
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {products.map((otherProduct) => (
-                  <Link
-                    to={`/product/${otherProduct.slug}`}
-                    key={otherProduct.id}
-                    className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  >
-                    <div className="aspect-square bg-white p-4 flex items-center justify-center">
-                      <img
-                        src={getImageUrl(otherProduct.image_address1)}
-                        alt={otherProduct.alt_text || otherProduct.name}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {otherProduct.name}
-                      </h3>
-                      <p className="text-gray-600 line-clamp-2">
-                        {otherProduct.description}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )} */}
         </div>
       </div>
       <Footer />
