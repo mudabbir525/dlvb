@@ -339,7 +339,9 @@ const ProductDetailsPage = () => {
                   Medical Supervision Required
                 </h3>
                 <p className="text-blue-700">
-                  {product.disclaimer || "This product should only be used under proper medical supervision. Please consult with a healthcare professional before use."}
+                  This product should only be used under proper medical
+                  supervision. Please consult with a healthcare professional
+                  before use.
                 </p>
               </div>
             </div>
