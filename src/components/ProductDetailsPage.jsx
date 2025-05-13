@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ChevronRight, ChevronLeft, Phone, Mail, MapPin } from "lucide-react";
@@ -99,14 +99,22 @@ const ProductDetailsPage = () => {
   const [error, setError] = useState(null);
   const [products, setProducts] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imgLoadError, setImgLoadError] = useState(false);
+
+  // Memoized image error handler
+  const handleImageError = useCallback(() => {
+    setImgLoadError(true);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        const timestamp = new Date().getTime();
         const response = await fetch(
-          `${API_BASE_URL}/fuck.php?timestamp=${new Date().getTime()}`
+          `${API_BASE_URL}/fuck.php?timestamp=${timestamp}`
         );
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -141,7 +149,13 @@ const ProductDetailsPage = () => {
           .filter(Boolean)
           .map(getImageUrl);
 
-        currentProduct.metaInfo = currentProduct.metaInfo || {
+        // Handle case with no images
+        if (currentProduct.images.length === 0) {
+          currentProduct.images = ['/placeholder-image.jpg']; // Fallback image
+        }
+
+        // Ensure meta information is properly structured
+        currentProduct.metaInfo = {
           title: currentProduct.meta_info_title || currentProduct.name || "Product Details",
           description: currentProduct.meta_info_description || currentProduct.description || "View our product details",
           canonical: currentProduct.meta_info_canonical || window.location.href,
@@ -149,16 +163,20 @@ const ProductDetailsPage = () => {
 
         setProduct(currentProduct);
 
+        // Filter other products for related products section
         const otherProducts = productsArray.filter(
           (p) => p.id !== currentProduct.id && p.slug !== currentProduct.slug
         );
         setProducts(otherProducts);
 
+        // Reset image load error state when product changes
+        setImgLoadError(false);
+        
         if (result.debug) {
-          console.log("Debug info:", result.debug);
+          // console.log("Debug info:", result.debug);
         }
       } catch (err) {
-        console.error("Error fetching products:", err);
+        // console.error("Error fetching products:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -168,30 +186,49 @@ const ProductDetailsPage = () => {
     if (productId) {
       fetchProducts();
     }
+    
+    // Reset states when product ID changes
+    return () => {
+      setCurrentImageIndex(0);
+      setImgLoadError(false);
+    };
   }, [productId]);
 
+  // Loading state with improved UX
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-200 to-pink-100">
-        <div className="text-2xl text-gray-600 animate-pulse">
-          Loading product details...
+        <div className="flex flex-col items-center">
+          <div className="text-2xl text-gray-600 animate-pulse mb-4">
+            Loading product details...
+          </div>
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
+  // Error state with more detailed information
   if (error || !product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-200 to-pink-100">
         <div className="text-2xl text-red-600 mb-4">
           Error: {error || "Product not found"}
         </div>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-purple-400 text-white rounded-lg hover:bg-purple-500 transition-colors"
-        >
-          Try Again
-        </button>
+        <div className="flex space-x-4">
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-purple-400 text-white rounded-lg hover:bg-purple-500 transition-colors"
+          >
+            Try Again
+          </button>
+          <Link
+            to="/products"
+            className="px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-colors"
+          >
+            Back to Products
+          </Link>
+        </div>
       </div>
     );
   }
@@ -232,7 +269,7 @@ const ProductDetailsPage = () => {
                   "@type": "Product",
                   "name": "${product.name}",
                   "image": ${JSON.stringify(product.images)},
-                  "description": "${product.description}",
+                  "description": "${product.description?.replace(/"/g, '\\"') || ''}",
                   "brand": {
                     "@type": "Brand",
                     "name": "DLVB IMPEX"
@@ -265,21 +302,29 @@ const ProductDetailsPage = () => {
 
           <div className="grid md:grid-cols-2 gap-12">
             <div className="flex flex-col">
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-white p-8 mb-4">
-                <img
-                  src={product.images[currentImageIndex]}
-                  alt={product.alt_text || product.name}
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                />
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-white p-8 mb-4 shadow-sm">
+                {!imgLoadError ? (
+                  <img
+                    src={product.images[currentImageIndex]}
+                    alt={product.alt_text || product.name}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    onError={handleImageError}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    Image not available
+                  </div>
+                )}
                 
-                {/* {product.images.length > 1 && (
+                {product.images.length > 1 && (
                   <>
                     <button 
                       onClick={() => setCurrentImageIndex((prev) => 
                         prev === 0 ? product.images.length - 1 : prev - 1
                       )}
                       className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                      aria-label="Previous image"
                     >
                       <ChevronLeft className="w-6 h-6 text-gray-800" />
                     </button>
@@ -288,11 +333,12 @@ const ProductDetailsPage = () => {
                         prev === product.images.length - 1 ? 0 : prev + 1
                       )}
                       className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                      aria-label="Next image"
                     >
                       <ChevronRight className="w-6 h-6 text-gray-800" />
                     </button>
                   </>
-                )} */}
+                )}
               </div>
               
               {/* Thumbnail Gallery */}
@@ -300,19 +346,21 @@ const ProductDetailsPage = () => {
                 <div className="flex justify-center gap-4 mt-2 flex-wrap">
                   {product.images.map((image, index) => (
                     <button
-                      key={index}
+                      key={`thumb-${index}`}
                       onClick={() => setCurrentImageIndex(index)}
                       className={`w-20 h-20 bg-white rounded-lg overflow-hidden p-2 ${
                         currentImageIndex === index 
                           ? "border-2 border-purple-500 shadow-md" 
                           : "border border-gray-200"
                       }`}
+                      aria-label={`View image ${index + 1}`}
                     >
                       <img 
                         src={image} 
                         alt={`${product.alt_text || product.name} - Image ${index + 1}`}
                         className="w-full h-full object-contain" 
                         loading="lazy"
+                        onError={handleImageError}
                       />
                     </button>
                   ))}
@@ -343,6 +391,17 @@ const ProductDetailsPage = () => {
                   supervision. Please consult with a healthcare professional
                   before use.
                 </p>
+              </div>
+              
+              {/* Added requested "For more details" link */}
+             <div className="mt-6 border-t border-gray-200 pt-4">
+                <Link 
+                  to="/" 
+                  className="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium group"
+                >
+                  <span className="mr-1">For more details visit DLVB Impex</span>
+                  <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" />
+                </Link>
               </div>
             </div>
           </div>
